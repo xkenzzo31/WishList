@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "5318808950",
+    "firebase_url": "https://wichlist-d0196.firebaseio.com",
+    "project_id": "wichlist-d0196",
+    "storage_bucket": "wichlist-d0196.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:5318808950:android:6be5c8204089c1b8",
+        "android_client_info": {
+          "package_name": "com.example.lucas.wishlist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "5318808950-5dlcvsfosoualtred2ks4tp16mn5234n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.lucas.wishlist",
+            "certificate_hash": "42042c54ade9a33fb1636eb56cc99ff9a9f7ea7e"
+          }
+        },
+        {
+          "client_id": "5318808950-8aa632rkj8e6g2tup17c18tat209hkt3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDc7MGdJrngxeWIZA7EqGgTF34tGC3cRlE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "5318808950-8aa632rkj8e6g2tup17c18tat209hkt3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
