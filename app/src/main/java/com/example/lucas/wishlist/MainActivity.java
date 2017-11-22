@@ -83,9 +83,9 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()){
-                                    Toast.makeText(MainActivity.this,"TA CREE TON COMPTE ENCULEE", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(MainActivity.this,"TA CREE TON COMPTE", Toast.LENGTH_LONG).show();
                                 } else {
-                                    Toast.makeText(MainActivity.this,"TA PAS CREE TON COMPTE ENCULEE", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(MainActivity.this,"TA PAS CREE TON COMPTE", Toast.LENGTH_LONG).show();
                                 }
                             }
                         });
