@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#4F4C4B"
+    tools:context="com.example.lucas.wishlist.Activity.Home_Activity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#212121"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TITRE"
+            android:textSize="24sp"
+            android:textAlignment="center"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOn="souhaits"
+            android:textOff="souhaits"
+            android:textColor="#ffffff"
+            android:layout_weight="1"
+            android:background="@drawable/shape_button_tab_yellow"/>
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOn="offerts"
+            android:textOff="offerts"
+            android:textColor="#ffffff"
+            android:layout_weight="1"
+            android:background="@drawable/shape_button_tab_yellow"/>
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOn="offrir"
+            android:textOff="offrir"
+            android:textColor="#ffffff"
+            android:layout_weight="1"
+            android:background="@drawable/shape_button_tab_yellow"/>
+
+    </LinearLayout>
+
+</LinearLayout>

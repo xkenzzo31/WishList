@@ -5,7 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    tools:context="com.example.lucas.wishlist.MainActivity">
+    android:background="#4F4C4B"
+    tools:context="com.example.lucas.wishlist.Activity.MainActivity">
+    <ImageView
+        android:id="@+id/image_acceuil"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+    <View
+        android:layout_width="0dp"
+        android:layout_height="30dp"/>
     <EditText
         android:id="@+id/nom_de_compte"
         android:layout_width="120dp"
@@ -22,19 +31,28 @@
         android:layout_height="40dp"
         android:hint="Mot de passe"
         />
+    <View
+        android:layout_width="0dp"
+        android:layout_height="10dp"/>
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center">
         <Button
             android:id="@+id/button_connect"
             android:text="Connexion"
+            android:background="@drawable/shape_custom_button_red"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="10dp"/>
         <Button
             android:id="@+id/button_register"
-            android:text="register"
+            android:text="Inscription"
+            android:textSize="12sp"
+            android:background="@drawable/shape_custom_button_grey"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
