@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <ToggleButton
+            android:id="@+id/toggle_souhaits"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textOn="souhaits"
@@ -32,6 +33,7 @@
             android:layout_weight="1"
             android:background="@drawable/shape_button_tab_yellow"/>
         <ToggleButton
+            android:id="@+id/toggle_offerts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textOn="offerts"
@@ -40,6 +42,7 @@
             android:layout_weight="1"
             android:background="@drawable/shape_button_tab_yellow"/>
         <ToggleButton
+            android:id="@+id/toggle_offire"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textOn="offrir"
