@@ -3,9 +3,7 @@ package services;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.widget.Toast;
 
-import com.example.lucas.wishlist.Activity.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -52,11 +50,15 @@ public class UserService {
         return mAuth.getCurrentUser() != null;
     }
 
+    public void singOut(){
+        mAuth.signOut();
+    }
+
     public void authenticate(@Nullable String username, @Nullable String password,
                              @NonNull final SuccessCallback successCallback,
                              final FailCallback failCallback) {
         if (successCallback == null)
-            logger.warning("authenticate#successCallback not set");
+        logger.warning("authenticate#successCallback not set");
 
         // TODO: check failCallback
         mAuth.signInWithEmailAndPassword(username,password)
@@ -73,7 +75,7 @@ public class UserService {
     }
 
     public void register(@Nullable String username, @Nullable String password,
-                         @Nullable final SuccessCallback authenticationCallback,final @Nullable FailCallback failCallback){
+                         @NonNull final SuccessCallback authenticationCallback,final @NonNull FailCallback failCallback){
         if (authenticationCallback == null)
             logger.warning("register#successCallback not set");
 

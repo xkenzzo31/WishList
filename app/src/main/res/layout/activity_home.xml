@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#4F4C4B"
-    tools:context="com.example.lucas.wishlist.Activity.Home_Activity">
+    tools:context="com.example.lucas.wishlist.activity.Home_Activity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

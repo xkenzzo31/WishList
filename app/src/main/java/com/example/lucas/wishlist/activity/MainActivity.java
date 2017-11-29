@@ -1,4 +1,4 @@
-package com.example.lucas.wishlist.Activity;
+package com.example.lucas.wishlist.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -20,8 +20,8 @@ import core.FailCallback;
 import core.SuccessCallback;
 import services.UserService;
 
-import static Utils.Utils.dpToPixels;
-import static Utils.Utils.isValidEmail;
+import static utils.Utils.dpToPixels;
+import static utils.Utils.isValidEmail;
 
 public class MainActivity extends AppCompatActivity {
     private UserService mUserService;
@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
-        mUserService = new UserService(MainActivity.this);
+        mUserService = UserService.getInstance(MainActivity.this);
         ImageView img = (ImageView) findViewById(R.id.image_acceuil);
         img.setImageResource(R.drawable.logo_ap);
 
@@ -119,8 +119,8 @@ public class MainActivity extends AppCompatActivity {
                             mdp.setHint("CHAMP VIDE OU INCORRECT !");
                             return;
                         }
-                        String mail = email.toString();
-                        String password = mdp.toString();
+                        String mail = email.getText().toString();
+                        String password = mdp.getText().toString();
                         mUserService.register(mail, password, new SuccessCallback() {
                             @Override
                             public void onSuccess() {
@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
                         }, new FailCallback() {
                             @Override
                             public void onFail(Error error) {
-                                Toast.makeText(MainActivity.this, "Register FAIL !", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "Register FAIL : "+error.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -146,7 +146,6 @@ public class MainActivity extends AppCompatActivity {
                 lp.copyFrom(dialog.getWindow().getAttributes());
                 lp.width = width;
                 lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-                dialog.show();
                 dialog.getWindow().setAttributes(lp);
                 dialog.show();
             }

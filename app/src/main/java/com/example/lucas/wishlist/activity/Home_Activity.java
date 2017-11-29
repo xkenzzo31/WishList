@@ -1,28 +1,28 @@
-package com.example.lucas.wishlist.Activity;
+package com.example.lucas.wishlist.activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ToggleButton;
 
 import com.example.lucas.wishlist.R;
 import com.google.firebase.auth.FirebaseAuth;
 
+import services.UserService;
+
 public class Home_Activity extends AppCompatActivity {
-    private FirebaseAuth auth;
+    private UserService mUserService;
     private ToggleButton shouait, offert, offrire;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.setContentView(R.layout.activity_home);
-        auth = FirebaseAuth.getInstance();
-        if (auth.getCurrentUser() == null){
-            auth.signOut();
+        mUserService = UserService.getInstance(Home_Activity.this);
+        if (mUserService.isSignedIn()){
+            mUserService.singOut();
             Intent intent = new Intent(Home_Activity.this, MainActivity.class);
             startActivity(intent);
             finish();
