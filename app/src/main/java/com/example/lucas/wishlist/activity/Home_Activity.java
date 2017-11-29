@@ -1,85 +1,163 @@
 package com.example.lucas.wishlist.activity;
 
-import android.content.Intent;
+import android.support.design.widget.TabLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.view.Window;
-import android.widget.CompoundButton;
-import android.widget.ToggleButton;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+
+import android.widget.TextView;
 
 import com.example.lucas.wishlist.R;
-import com.google.firebase.auth.FirebaseAuth;
 
-import services.UserService;
+import fragment.frag0;
+import fragment.frag1;
+import fragment.frag2;
 
 public class Home_Activity extends AppCompatActivity {
-    private UserService mUserService;
-    private ToggleButton shouait, offert, offrire;
+
+    /**
+     * The {@link android.support.v4.view.PagerAdapter} that will provide
+     * fragments for each of the sections. We use a
+     * {@link FragmentPagerAdapter} derivative, which will keep every
+     * loaded fragment in memory. If this becomes too memory intensive, it
+     * may be best to switch to a
+     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
+     */
+    private SectionsPagerAdapter mSectionsPagerAdapter;
+
+    /**
+     * The {@link ViewPager} that will host the section contents.
+     */
+    private ViewPager mViewPager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.setContentView(R.layout.activity_home);
-        mUserService = UserService.getInstance(Home_Activity.this);
-        if (mUserService.isSignedIn()){
-            mUserService.singOut();
-            Intent intent = new Intent(Home_Activity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
-        shouait = (ToggleButton) findViewById(R.id.toggle_souhaits);
-        offert = (ToggleButton) findViewById(R.id.toggle_offerts);
-        offrire = (ToggleButton) findViewById(R.id.toggle_offire);
-        shouait.setChecked(true);
-        shouait.setEnabled(false);
+        setContentView(R.layout.activity_home_);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        // Create the adapter that will return a fragment for each of the three
+        // primary sections of the activity.
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_home_, menu);
+        return true;
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        setButtonClick();
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+
+        //noinspection SimplifiableIfStatement
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * A placeholder fragment containing a simple view.
+     */
+    public static class PlaceholderFragment extends Fragment {
+        /**
+         * The fragment argument representing the section number for this
+         * fragment.
+         */
+        private static final String ARG_SECTION_NUMBER = "section_number";
+
+        public PlaceholderFragment() {
+        }
+
+        /**
+         * Returns a new instance of this fragment for the given section
+         * number.
+         */
+        public static PlaceholderFragment newInstance(int sectionNumber) {
+            PlaceholderFragment fragment = new PlaceholderFragment();
+            Bundle args = new Bundle();
+            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_home_, container, false);
+            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+            return rootView;
+        }
 
     }
-    private void setButtonClick(){
-        shouait.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b){
-                    shouait.setChecked(true);
-                    offert.setChecked(false);
-                    offrire.setChecked(false);
-                    shouait.setEnabled(false);
-                    offert.setEnabled(true);
-                    offrire.setEnabled(true);
 
-                }
+    /**
+     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
+     * one of the sections/tabs/pages.
+     */
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+                    public SectionsPagerAdapter(FragmentManager fm) {
+                        super(fm);
+                    }
+
+                    @Override
+                    public Fragment getItem(int position) {
+                        switch (position){
+                            case 0:
+                                return new frag0();
+                            case 1:
+                                return new frag1();
+                            case 2:
+                                return new frag2();
+                default:
+                    return null;
             }
-        });
-        offert.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b){
-                    shouait.setChecked(false);
-                    offert.setChecked(true);
-                    offrire.setChecked(false);
-                    shouait.setEnabled(true);
-                    offert.setEnabled(false);
-                    offrire.setEnabled(true);
-                }
-            }
-        });
-        offrire.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
-                    shouait.setChecked(false);
-                    offert.setChecked(false);
-                    offrire.setChecked(true);
-                    shouait.setEnabled(true);
-                    offert.setEnabled(true);
-                    offrire.setEnabled(false);
-                }
-            }
-        });
+        }
+
+        @Override
+        public int getCount() {
+            // Show 3 total pages.
+            return 3;
+        }
     }
+
+
 }

@@ -15,7 +15,7 @@
         />
     <View
         android:layout_width="0dp"
-        android:layout_height="30dp"/>
+        android:layout_height="10dp"/>
     <EditText
         android:id="@+id/nom_de_compte"
         android:layout_width="match_parent"
