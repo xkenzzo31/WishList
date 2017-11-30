@@ -17,7 +17,7 @@ public class frag2 extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_show_wish,container,false);
+        View rootView = inflater.inflate(R.layout.fragment_show_wish2,container,false);
 
         return rootView;
     }
