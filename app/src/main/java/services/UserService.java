@@ -9,12 +9,18 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import core.Error;
 import core.FailCallback;
 import core.SuccessCallback;
+import model.UsersModel;
+import model.WishsModel;
 
 /**
  * Created by lucas on 24/11/2017.
@@ -24,12 +30,15 @@ public class UserService {
     private static Logger logger = Logger.getLogger(UserService.class.getName());
 
     private static UserService sInstance;
+    private static DatabaseReference mDatabase;
+
     private Activity activity;
 
     private FirebaseAuth mAuth;
 
     public UserService(Activity activity) {
         this.activity = activity;
+        mDatabase  = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
     }
 
@@ -91,5 +100,7 @@ public class UserService {
                     }
                 });
     }
+
+
 }
 

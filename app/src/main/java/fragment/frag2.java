@@ -14,6 +14,10 @@ import com.example.lucas.wishlist.R;
  */
 
 public class frag2 extends Fragment {
+    public static frag2 newInstance() {
+        return new frag2();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {

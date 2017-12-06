@@ -27,30 +27,28 @@ public final class Utils {
         }
     }
 
-    public static Bitmap resizeBitmap(Context context,Bitmap bitmap){
+    public static Bitmap resizeBitmap(Context context,Bitmap bitmap,int screenWidth,int screenHeight){
 
         DisplayMetrics metrics = new DisplayMetrics();
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         wm.getDefaultDisplay().getMetrics(metrics);
-        int heightScreen =  (metrics.heightPixels /3) - (int) dpToPixels(10,context);
-        int widthScreen = metrics.widthPixels - (int) dpToPixels(30,context);
         int bmWidth = bitmap.getWidth();
         int bmHeight = bitmap.getHeight();
         int new_width = 0;
         int new_height = 0;
 
         // first check if we need to scale width
-        if (bmWidth > widthScreen) {
+        if (bmWidth > screenWidth) {
             //scale width to fit
-            new_width = widthScreen;
+            new_width = screenWidth;
             //scale height to maintain aspect ratio
             new_height = (new_width * bmHeight) / bmWidth;
         }
 
         // then check if we need to scale even with the new height
-        if (bmHeight > heightScreen) {
+        if (bmHeight > screenHeight) {
             //scale height to fit instead
-            new_height = heightScreen;
+            new_height = screenHeight;
             //scale width to maintain aspect ratio
             new_width = (new_height * bmWidth) / bmHeight;
         }
@@ -59,6 +57,31 @@ public final class Utils {
         // "RECREATE" THE NEW BITMAP
         Bitmap resized = Bitmap.createScaledBitmap(bitmap, new_width, new_height, true);
         return resized;
+    }
+    public static class GetScreenSize {
+        Context context;
+        DisplayMetrics metrics;
+
+        public GetScreenSize(Context context) {
+            this.context = context;
+            getMetrics();
+        }
+        private DisplayMetrics getMetrics(){
+            metrics = new DisplayMetrics();
+            WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+            wm.getDefaultDisplay().getMetrics(metrics);
+            return metrics;
+        }
+
+        public int getScreenHeight(){
+            return  metrics.heightPixels;
+        }
+
+        public int getScreenWidht(){
+            return metrics.widthPixels;
+        }
+
+
     }
 
 

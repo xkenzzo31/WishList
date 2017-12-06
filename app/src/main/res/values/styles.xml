@@ -65,6 +65,6 @@
     <style name="Tab_Home_Activity.FloatActionButton">
         <item name="android:layout_gravity">end|bottom</item>
     </style>
-
+    <style name="custom_dialog"/>
 
 </resources>

@@ -17,7 +17,7 @@
     <EditText
         android:id="@+id/nom_de_compte"
         style="@style/MainActivity.Edit"
-        android:hint="Email"
+        android:hint="@string/email"
         />
     <View
         style="@style/MainActivity.View"
@@ -25,22 +25,24 @@
     <EditText
         android:id="@+id/mot_de_passe"
         style="@style/MainActivity.Edit"
-        android:hint="Mot de passe"
+        android:hint="@string/mot_de_passe"
         />
     <View
-        style="@style/MainActivity.View"/>
+        android:layout_height="20dp"
+        android:layout_width="0dp"/>
     <LinearLayout
         android:orientation="vertical"
         style="@style/MainActivity.Layout">
         <Button
             android:id="@+id/button_connect"
-            android:text="Connexion"
+            android:text="@string/connexion"
             style="@style/MainActivity.Layout.ButtonRed" />
         <View
-            style="@style/MainActivity.View"/>
+            style="@style/MainActivity.View"
+            />
         <Button
             android:id="@+id/button_register"
-            android:text="Inscription"
+            android:text="@string/inscription"
             style="@style/MainActivity.Layout.ButtonBlack" />
     </LinearLayout>
 

@@ -24,7 +24,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -32,19 +32,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/register_validation"
-            android:layout_marginRight="5dp"
-            android:text="Inscription"
+            android:text="@string/inscription"
             android:textSize="10sp"
             android:background="@drawable/shape_custom_button_red"
-            android:layout_weight="0.9"/>
+            />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="10dp"/>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/register_leave"
-            android:layout_marginLeft="5dp"
-            android:text="Retour"
+            android:text="@string/retour"
             android:background="@drawable/shape_custom_button_grey"
             android:textSize="12sp"
-            android:layout_weight="0.9"/>
+            />
     </LinearLayout>
 </LinearLayout>

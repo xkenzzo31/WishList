@@ -21,6 +21,7 @@ import core.Error;
 import core.FailCallback;
 import core.SuccessCallback;
 import services.UserService;
+import utils.Utils;
 
 import static utils.Utils.dpToPixels;
 import static utils.Utils.isValidEmail;
@@ -37,7 +38,10 @@ public class MainActivity extends AppCompatActivity {
         mUserService = UserService.getInstance(MainActivity.this);
         ImageView img = (ImageView) findViewById(R.id.image_acceuil);
         Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.logoap);
-        img.setImageBitmap(resizeBitmap(MainActivity.this,bm));
+        Utils.GetScreenSize getScreenSize = new Utils.GetScreenSize(MainActivity.this);
+        int widthImage = getScreenSize.getScreenWidht() - (int) dpToPixels(30,MainActivity.this);
+        int heightImage = getScreenSize.getScreenHeight() /3;
+        img.setImageBitmap(resizeBitmap(MainActivity.this,bm,widthImage,heightImage));
 
 
     }

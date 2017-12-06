@@ -24,9 +24,11 @@ import com.example.lucas.wishlist.R;
 import fragment.frag0;
 import fragment.frag1;
 import fragment.frag2;
+import services.UserService;
 
-public class Home_Activity extends AppCompatActivity {
+public class Home_Activity extends AppCompatActivity implements frag0.Provider {
 
+    private UserService mUserService;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -70,6 +72,7 @@ public class Home_Activity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        mUserService = UserService.getInstance(Home_Activity.this);
 
     }
 
@@ -90,6 +93,11 @@ public class Home_Activity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public String getTheTitle() {
+        return "";
     }
 
     /**
