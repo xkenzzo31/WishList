@@ -35,13 +35,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
-        mUserService = UserService.getInstance(MainActivity.this);
+        mUserService = new UserService(MainActivity.this);
         ImageView img = (ImageView) findViewById(R.id.image_acceuil);
         Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.logoap);
         Utils.GetScreenSize getScreenSize = new Utils.GetScreenSize(MainActivity.this);
         int widthImage = getScreenSize.getScreenWidht() - (int) dpToPixels(30,MainActivity.this);
         int heightImage = getScreenSize.getScreenHeight() /3;
-        img.setImageBitmap(resizeBitmap(MainActivity.this,bm,widthImage,heightImage));
+        img.setImageBitmap(resizeBitmap(bm,widthImage,heightImage));
 
 
     }

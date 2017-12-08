@@ -25,6 +25,7 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'com.google.firebase:firebase-auth:11.4.2'
     implementation 'com.google.firebase:firebase-database:11.4.2'
+    implementation 'com.getbase:floatingactionbutton:1.10.1'
     implementation 'com.google.firebase:firebase-storage:11.4.2'
     implementation 'com.firebaseui:firebase-ui-database:3.1.0'
     implementation 'com.firebaseui:firebase-ui-firestore:3.1.0'

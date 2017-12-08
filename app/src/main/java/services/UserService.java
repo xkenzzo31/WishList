@@ -42,14 +42,7 @@ public class UserService {
         mAuth = FirebaseAuth.getInstance();
     }
 
-    public static UserService getInstance(Activity activity) {
-        if (sInstance != null) {
-            return sInstance;
-        }
 
-        sInstance = new UserService(activity);
-        return sInstance;
-    }
 
     public @Nullable FirebaseUser getFirebaseUser() {
         return mAuth.getCurrentUser();
@@ -99,6 +92,11 @@ public class UserService {
                         }
                     }
                 });
+    }
+
+    public void pushFireBase(){
+        UsersModel usersModel = new UsersModel(mAuth.getUid());
+        mDatabase.child("Users").child(usersModel.getIdUser()).setValue(usersModel);
     }
 
 

@@ -5,17 +5,55 @@ package model;
  */
 
 public class WishsModel {
-    String test;
+    private String title;
+    private String image;
+    private String description;
+    private String productUrl;
+    private boolean status;
 
-    public WishsModel(String test) {
-        this.test = test;
+    public WishsModel(String title, String image, String description) {
+        this.title = title;
+        this.image = image;
+        this.description = description;
     }
 
-    public String getTest() {
-        return test;
+    public boolean isStatus() {
+        return status;
     }
 
-    public void setTest(String test) {
-        this.test = test;
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getProductUrl() {
+        return productUrl;
+    }
+
+    public void setProductUrl(String productUrl) {
+        this.productUrl = productUrl;
     }
 }

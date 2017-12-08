@@ -1,8 +1,6 @@
 package com.example.lucas.wishlist.activity;
 
 import android.support.design.widget.TabLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -17,13 +15,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.widget.TextView;
-
 import com.example.lucas.wishlist.R;
 
 import fragment.frag0;
 import fragment.frag1;
-import fragment.frag2;
 import services.UserService;
 
 public class Home_Activity extends AppCompatActivity implements frag0.Provider {
@@ -64,15 +59,8 @@ public class Home_Activity extends AppCompatActivity implements frag0.Provider {
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        mUserService = UserService.getInstance(Home_Activity.this);
+
+        mUserService = new UserService(Home_Activity.this);
 
     }
 
@@ -129,8 +117,8 @@ public class Home_Activity extends AppCompatActivity implements frag0.Provider {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_home_, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+
+
             return rootView;
         }
 
@@ -153,8 +141,6 @@ public class Home_Activity extends AppCompatActivity implements frag0.Provider {
                                 return new frag0();
                             case 1:
                                 return new frag1();
-                            case 2:
-                                return new frag2();
                 default:
                     return null;
             }
@@ -162,8 +148,8 @@ public class Home_Activity extends AppCompatActivity implements frag0.Provider {
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            // Show 2 total pages.
+            return 2;
         }
     }
 
