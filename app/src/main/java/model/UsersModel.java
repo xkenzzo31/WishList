@@ -16,8 +16,8 @@ public class UsersModel {
         this.idUser = idUser;
     }
 
-    public void addWishModel(List<WishsModel> mListWish){
-        listWishs.addAll(mListWish);
+    public void addWishModel(WishsModel mListWish){
+        listWishs.add(mListWish);
     }
 
     public void addFriendModel(List<String> mListFriend){

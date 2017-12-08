@@ -11,10 +11,11 @@ public class WishsModel {
     private String productUrl;
     private boolean status;
 
-    public WishsModel(String title, String image, String description) {
+    public WishsModel(String title, String image, String description, String productUrl) {
         this.title = title;
         this.image = image;
         this.description = description;
+        this.productUrl = productUrl;
     }
 
     public boolean isStatus() {

@@ -10,5 +10,6 @@
     <string name="mot_de_passe">Mot de passe</string>
     <string name="connexion">Connexion</string>
     <string name="inscription">Inscription</string>
+    <string name="Enregistre">Enregistré</string>
     <string name="retour">Retour</string>
 </resources>

@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -24,10 +25,14 @@ import android.widget.ImageButton;
 import com.example.lucas.wishlist.R;
 import com.example.lucas.wishlist.activity.MainActivity;
 import com.getbase.floatingactionbutton.AddFloatingActionButton;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
 import java.io.InputStream;
 
+import model.UsersModel;
+import model.WishsModel;
 import services.UserService;
 import utils.Utils;
 
@@ -41,7 +46,7 @@ import static utils.Utils.resizeBitmap;
  */
 
 public class frag0 extends Fragment {
-
+    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     UserService userService;
     private static final int RESULT_LOAD_IMAGE = 1;
     private String selectedImagePath;
@@ -63,6 +68,7 @@ public class frag0 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_home_,container,false);
+        userService = new UserService(getActivity());
         AddFloatingActionButton addWishButton = (AddFloatingActionButton) rootView.findViewById(R.id.add_wish_button);
         addWishButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,10 +96,17 @@ public class frag0 extends Fragment {
                 getImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        // in onCreate or any event where your want the user to
-                        // select a file
                         Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         startActivityForResult(i, RESULT_LOAD_IMAGE);
+                    }
+                });
+                setWishInFirebase.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        UsersModel mUserModel = new UsersModel(userService.getFirebaseUser().getEmail());
+                        WishsModel wishsModel = new WishsModel(title.getText().toString(), selectedImagePath,description.getText().toString(),urlWish.getText().toString());
+                        mUserModel.addWishModel(wishsModel);
+                        mDatabase.child("users").child(userService.getFirebaseUser().getUid()).setValue(mUserModel);
                     }
                 });
                 dialog.show();
