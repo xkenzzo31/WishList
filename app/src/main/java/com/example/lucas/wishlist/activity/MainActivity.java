@@ -57,6 +57,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateUI(){
+        if (false){
+            mUserService.signOut();
+            connection();
+            return;
+        }
         if (mUserService.isSignedIn()){
             openHome();
         } else {

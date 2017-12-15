@@ -17,11 +17,11 @@ import android.view.ViewGroup;
 
 import com.example.lucas.wishlist.R;
 
-import fragment.frag0;
-import fragment.frag1;
+import fragment.MyWishListFragment;
+import fragment.FriendsFragment;
 import services.UserService;
 
-public class Home_Activity extends AppCompatActivity implements frag0.Provider {
+public class Home_Activity extends AppCompatActivity implements MyWishListFragment.Provider {
 
     private UserService mUserService;
     /**
@@ -138,9 +138,9 @@ public class Home_Activity extends AppCompatActivity implements frag0.Provider {
                     public Fragment getItem(int position) {
                         switch (position){
                             case 0:
-                                return new frag0();
+                                return new MyWishListFragment();
                             case 1:
-                                return new frag1();
+                                return new FriendsFragment();
                 default:
                     return null;
             }

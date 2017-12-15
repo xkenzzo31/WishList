@@ -1,21 +1,36 @@
 package model;
 
+import com.google.firebase.database.DataSnapshot;
+
+import java.util.HashMap;
+
 /**
  * Created by lucas on 06/12/2017.
  */
 
-public class WishsModel {
+public class WishModel {
     private String title;
     private String image;
     private String description;
     private String productUrl;
     private boolean status;
 
-    public WishsModel(String title, String image, String description, String productUrl) {
+    public WishModel(String title, String image, String description, String productUrl) {
         this.title = title;
         this.image = image;
         this.description = description;
         this.productUrl = productUrl;
+    }
+
+    public WishModel(HashMap<String, String> hashMap) {
+        this.title = hashMap.get("title");
+        this.image = hashMap.get("image");
+        this.description = hashMap.get("description");
+        this.productUrl = hashMap.get("productUrl");
+    }
+
+    public WishModel() {
+
     }
 
     public boolean isStatus() {

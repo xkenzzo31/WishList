@@ -18,6 +18,7 @@
         android:id="@+id/nom_de_compte"
         style="@style/MainActivity.Edit"
         android:hint="@string/email"
+        android:text="d@d.fr"
         />
     <View
         style="@style/MainActivity.View"
@@ -26,6 +27,7 @@
         android:id="@+id/mot_de_passe"
         style="@style/MainActivity.Edit"
         android:hint="@string/mot_de_passe"
+        android:text="ddddddd"
         />
     <View
         android:layout_height="20dp"

@@ -12,7 +12,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,16 +22,26 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.example.lucas.wishlist.R;
-import com.example.lucas.wishlist.activity.MainActivity;
 import com.getbase.floatingactionbutton.AddFloatingActionButton;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Calendar;
 
 import model.UsersModel;
-import model.WishsModel;
+import model.WishModel;
 import services.UserService;
 import utils.Utils;
 
@@ -45,21 +54,22 @@ import static utils.Utils.resizeBitmap;
  * Created by lucas on 29/11/2017.
  */
 
-public class frag0 extends Fragment {
+public class MyWishListFragment extends Fragment {
     DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     UserService userService;
     private static final int RESULT_LOAD_IMAGE = 1;
-    private String selectedImagePath;
+    private Uri selectedImagePath;
     private ImageButton getImage;
+    private FirebaseStorage storage = FirebaseStorage.getInstance("gs://wichlist-d0196.appspot.com");
+    private StorageReference storageRef = storage.getReference();
     private int width, height;
-    public static frag0 newInstance() {
-        return new frag0();
+    public static MyWishListFragment newInstance() {
+        return new MyWishListFragment();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
 
     }
@@ -100,13 +110,40 @@ public class frag0 extends Fragment {
                         startActivityForResult(i, RESULT_LOAD_IMAGE);
                     }
                 });
+                title.setText(Calendar.getInstance().getTime().getTime() + "");
+                description.setText(Calendar.getInstance().getTime().getTime() + "");
+                urlWish.setText(Calendar.getInstance().getTime().getTime() + "");
                 setWishInFirebase.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        UsersModel mUserModel = new UsersModel(userService.getFirebaseUser().getEmail());
-                        WishsModel wishsModel = new WishsModel(title.getText().toString(), selectedImagePath,description.getText().toString(),urlWish.getText().toString());
-                        mUserModel.addWishModel(wishsModel);
-                        mDatabase.child("users").child(userService.getFirebaseUser().getUid()).setValue(mUserModel);
+                        Uri file = selectedImagePath;
+                        StorageReference riversRef = storageRef.child("images/"+file.getLastPathSegment());
+                        UploadTask uploadTask = riversRef.putFile(file);
+
+// Register observers to listen for when the download is done or if it fails
+                        uploadTask.addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                // Handle unsuccessful uploads
+                            }
+                        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                                final WishModel wishModel = new WishModel(title.getText().toString(), downloadUrl.toString(),description.getText().toString(),urlWish.getText().toString());
+
+                                userService.addWish(wishModel, new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        userService.getWisher().getWishs().add(wishModel);
+                                    }
+                                });
+                            }
+                        });
+
+//                        mDatabase.child("users").child(userService.getFirebaseUser().getUid()).child("wishs")
+//                                .setValue(userService.getWisher().getWishs());
                     }
                 });
                 dialog.show();
@@ -115,13 +152,47 @@ public class frag0 extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        mDatabase.child("users").child(userService.getFirebaseUser().getUid()).child("wishs")
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == RESULT_LOAD_IMAGE) {
                 if (data != null){
                     try {
                         Uri pickedImage = data.getData();
-                        selectedImagePath = pickedImage.toString();
+
+                        selectedImagePath = pickedImage;
                         InputStream input =  getActivity().getContentResolver().openInputStream(pickedImage);
                         Bitmap bitmap = BitmapFactory.decodeStream(input);
                         input.close();
