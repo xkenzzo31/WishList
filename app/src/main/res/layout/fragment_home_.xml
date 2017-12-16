@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.lucas.wishlist.activity.Home_Activity$PlaceholderFragment">
+    tools:context="com.example.lucas.wishlist.activity.HomeActivity$PlaceholderFragment">
     <ListView
         android:id="@+id/list_wishs"
         android:layout_width="match_parent"

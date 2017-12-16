@@ -91,9 +91,10 @@ public class MainActivity extends AppCompatActivity {
                 mUserService.authenticate(ndc, mdp,
                         new SuccessCallback() {
                             @Override
-                            public void onSuccess() {
+                            public void onSuccess(Object o) {
                                 openHome();
                             }
+
                         },
                         new FailCallback() {
                             @Override
@@ -137,10 +138,11 @@ public class MainActivity extends AppCompatActivity {
                         String password = mdp.getText().toString();
                         mUserService.register(mail, password, new SuccessCallback() {
                             @Override
-                            public void onSuccess() {
+                            public void onSuccess(Object o) {
                                 Toast.makeText(MainActivity.this, "Register Succes !", Toast.LENGTH_SHORT).show();
                                 updateUI();
                             }
+
                         }, new FailCallback() {
                             @Override
                             public void onFail(Error error) {
@@ -167,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openHome() {
-        Intent intent = new Intent(this, Home_Activity.class);
+        Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
         finish();
     }

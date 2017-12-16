@@ -40,6 +40,13 @@ public class Wisher {
         this.email = email;
     }
 
+    /**
+     * parse un datasnapshot et le retourne en {@link Wisher}
+     *
+     * @param dataSnapshot
+     * @return {@link Wisher}
+     */
+
     public static Wisher fromDataSnapshot(DataSnapshot dataSnapshot) {
         Wisher wisher = new Wisher();
         Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();

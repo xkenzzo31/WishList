@@ -20,6 +20,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 
 import com.example.lucas.wishlist.R;
 import com.getbase.floatingactionbutton.AddFloatingActionButton;
@@ -38,10 +39,15 @@ import com.google.firebase.storage.UploadTask;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 
+import adapteur.WishAdapteur;
+import core.SuccessCallback;
 import model.UsersModel;
 import model.WishModel;
+import model.Wisher;
 import services.UserService;
 import utils.Utils;
 
@@ -116,8 +122,11 @@ public class MyWishListFragment extends Fragment {
                 setWishInFirebase.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        dialog.dismiss();
+
+
                         Uri file = selectedImagePath;
-                        StorageReference riversRef = storageRef.child("images/"+file.getLastPathSegment());
+                        StorageReference riversRef = storageRef.child("images/"+userService.getFirebaseUser().getUid()+"/"+file.getLastPathSegment());
                         UploadTask uploadTask = riversRef.putFile(file);
 
 // Register observers to listen for when the download is done or if it fails
@@ -134,16 +143,17 @@ public class MyWishListFragment extends Fragment {
                                 final WishModel wishModel = new WishModel(title.getText().toString(), downloadUrl.toString(),description.getText().toString(),urlWish.getText().toString());
 
                                 userService.addWish(wishModel, new OnSuccessListener<Void>() {
+
                                     @Override
                                     public void onSuccess(Void aVoid) {
+
                                         userService.getWisher().getWishs().add(wishModel);
                                     }
                                 });
                             }
                         });
 
-//                        mDatabase.child("users").child(userService.getFirebaseUser().getUid()).child("wishs")
-//                                .setValue(userService.getWisher().getWishs());
+
                     }
                 });
                 dialog.show();
@@ -155,11 +165,20 @@ public class MyWishListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
+        final ListView wishListView = getActivity().findViewById(R.id.list_wishs);
         mDatabase.child("users").child(userService.getFirebaseUser().getUid()).child("wishs")
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    //TODO update UI
+                        userService.updateWisherAsync(new SuccessCallback<Wisher>() {
+                            @Override
+                            public void onSuccess(Wisher wisher) {
+                                WishAdapteur wishAdapteur =
+                                        new WishAdapteur(getActivity(), new ArrayList<>(wisher.getWishs()));
+                                wishListView.setAdapter(wishAdapteur);
+                            }
+                        });
 
                     }
 

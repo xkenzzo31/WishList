@@ -72,7 +72,7 @@ public class UserService {
     }
 
     public void authenticate(@Nullable String username, @Nullable String password,
-                             @NonNull final SuccessCallback successCallback,
+                             @NonNull final SuccessCallback<Void> successCallback,
                              final FailCallback failCallback) {
         if (successCallback == null)
             logger.warning("authenticate#successCallback not set");
@@ -95,7 +95,7 @@ public class UserService {
                                                     Iterator<DataSnapshot> childrenIterator = dataSnapshot.getChildren().iterator();
                                                     while (childrenIterator.hasNext()) {
                                                         Wisher friend = Wisher.fromDataSnapshot(childrenIterator.next());
-                                                        successCallback.onSuccess();
+                                                        successCallback.onSuccess(null);
                                                     }
                                                 }
 
@@ -120,8 +120,8 @@ public class UserService {
     }
 
     public void register(@Nullable final String username, @Nullable String password,
-                         @NonNull final SuccessCallback authenticationCallback, final @NonNull FailCallback failCallback) {
-        if (authenticationCallback == null)
+                         @NonNull final SuccessCallback<Void> successCallback, final @NonNull FailCallback failCallback) {
+        if (successCallback == null)
             logger.warning("register#successCallback not set");
 
         final List<WishModel> wishModels = Collections.emptyList();
@@ -134,25 +134,15 @@ public class UserService {
                     }
                 })
                 .continueWithTask(new Continuation<AuthResult, Task<Void>>() {
-                    @Override
                     public Task<Void> then(@NonNull Task<AuthResult> task) throws Exception {
                         wisher = new Wisher(mAuth.getCurrentUser().getEmail());
                         return mDatabase.child("users").child(mAuth.getUid()).setValue(wisher);
                     }
                 })
-                .continueWithTask(new Continuation<Void, Task<Void>>() {
-                    @Override
-                    public Task<Void> then(@NonNull Task<Void> task) throws Exception {
-                        WishModel wish3 = new WishModel("test3", "url3", "d3", "https://console.firebase.google.com/project/wichlist-d0196/database/wichlist-d0196/data");
-                        return mDatabase.child("users").child(mAuth.getUid()).child("wishs")
-                                .child(wisher.getWishs().size() + "")
-                                .setValue(wish3);
-                    }
-                })
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        authenticationCallback.onSuccess();
+                        successCallback.onSuccess(aVoid);
 
                     }
                 })
@@ -174,12 +164,26 @@ public class UserService {
         return wisher;
     }
 
-    public void addWish(final WishModel newWish, final OnSuccessListener<Void> onSuccessListener) {
+    public void updateWisherAsync(final SuccessCallback<Wisher> successCallback) {
         mDatabase.child("users").child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 wisher = Wisher.fromDataSnapshot(dataSnapshot);
+                successCallback.onSuccess(wisher);
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    public void addWish(final WishModel newWish, final OnSuccessListener<Void> onSuccessListener) {
+        updateWisherAsync(new SuccessCallback<Wisher>() {
+            @Override
+            public void onSuccess(Wisher wisher) {
                 mDatabase.child("users").child(mAuth.getUid()).child("wishs")
                         .child(wisher.getWishs().size() + "")
                         .setValue(newWish)
@@ -190,13 +194,10 @@ public class UserService {
                             }
                         });
             }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
         });
-
     }
+
+
+
 }
 

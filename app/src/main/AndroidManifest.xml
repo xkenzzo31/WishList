@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.lucas.wishlist">
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -21,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.Home_Activity"
+            android:name=".activity.HomeActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_activity_home_"
             android:theme="@style/Theme.AppCompat.NoActionBar"></activity>

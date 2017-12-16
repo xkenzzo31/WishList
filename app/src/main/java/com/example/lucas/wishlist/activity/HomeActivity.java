@@ -19,11 +19,13 @@ import com.example.lucas.wishlist.R;
 
 import fragment.MyWishListFragment;
 import fragment.FriendsFragment;
+import model.Wisher;
 import services.UserService;
 
-public class Home_Activity extends AppCompatActivity implements MyWishListFragment.Provider {
+public class HomeActivity extends AppCompatActivity implements MyWishListFragment.Provider {
 
     private UserService mUserService;
+    private Wisher wisher;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -43,6 +45,7 @@ public class Home_Activity extends AppCompatActivity implements MyWishListFragme
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_);
+        mUserService = new UserService(HomeActivity.this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -60,7 +63,6 @@ public class Home_Activity extends AppCompatActivity implements MyWishListFragme
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
 
-        mUserService = new UserService(Home_Activity.this);
 
     }
 
