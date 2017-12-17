@@ -8,8 +8,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,11 +16,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.example.lucas.wishlist.R;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DatabaseReference;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,11 +34,11 @@ import utils.Utils;
  * Created by lucas on 15/12/2017.
  */
 
-public class WishAdapteur extends ArrayAdapter<WishModel> {
+public class WishAdapteurNoHave extends ArrayAdapter<WishModel> {
     private int screenWidth, screenHeight;
     private  Context context;
     private ArrayList<WishModel> allWish;
-    public WishAdapteur(@NonNull Context context, @NonNull List<WishModel> wishList, @NonNull ArrayList<WishModel> allWish) {
+    public WishAdapteurNoHave(@NonNull Context context, @NonNull List<WishModel> wishList, @NonNull ArrayList<WishModel> allWish) {
         super(context, 0, wishList);
         this.context = context;
         Utils.GetScreenSize getScreenSize = new Utils.GetScreenSize(context);
@@ -56,15 +52,15 @@ public class WishAdapteur extends ArrayAdapter<WishModel> {
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext())
-                    .inflate(R.layout.wish_list_layout, parent, false);
+                    .inflate(R.layout.wish_list_have_layout, parent, false);
         }
         final WishModel mWish = getItem(position);
 
-            ImageView imageView = (ImageView) convertView.findViewById(R.id.wish_picture);
-            TextView title = (TextView) convertView.findViewById(R.id.wish_title);
-            TextView descrip = (TextView) convertView.findViewById(R.id.wish_description);
-            Button openProduct = (Button) convertView.findViewById(R.id.go_product_buy_page);
-            Button haveProduc = (Button) convertView.findViewById(R.id.product_is_buy);
+            ImageView imageView = (ImageView) convertView.findViewById(R.id.wish_picture_have);
+            TextView title = (TextView) convertView.findViewById(R.id.wish_title_have);
+            TextView descrip = (TextView) convertView.findViewById(R.id.wish_description_have);
+            Button openProduct = (Button) convertView.findViewById(R.id.deelet_button_wish);
+            Button haveProduc = (Button) convertView.findViewById(R.id.product_not_buy);
 
 
 
@@ -81,6 +77,7 @@ public class WishAdapteur extends ArrayAdapter<WishModel> {
                     }
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                     context.startActivity(browserIntent);
+
                 }
             });
             haveProduc.setOnClickListener(new View.OnClickListener() {
@@ -88,7 +85,7 @@ public class WishAdapteur extends ArrayAdapter<WishModel> {
                 public void onClick(View view) {
                     if (allWish.contains(mWish)){
                         int positionOriginal = allWish.indexOf(mWish);
-                        mWish.setStatus(true);
+                        mWish.setStatus(false);
                         //TODO: a voir si on peux évité la fonction static{@link UserService line}
                         UserService.updateWish(mWish, positionOriginal, new OnSuccessListener<Void>() {
                             @Override

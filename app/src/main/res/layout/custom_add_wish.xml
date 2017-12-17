@@ -1,48 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
-    android:gravity="center"
-    android:orientation="vertical">
-    <ImageButton
-        android:id="@+id/select_image_in_gallery"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <Space
-        android:layout_width="0dp"
-        android:layout_height="20dp"/>
-    <EditText
-        android:id="@+id/wish_title"
-        android:hint="test"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <Space
-        android:layout_width="0dp"
-        android:layout_height="20dp"/>
-    <EditText
-        android:id="@+id/wish_description"
-        android:hint="test"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <Space
-        android:layout_width="0dp"
-        android:layout_height="20dp"/>
-    <EditText
-        android:id="@+id/add_wish_product_url"
-        android:hint="test"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <Space
-        android:layout_width="0dp"
-        android:layout_height="20dp"/>
-    <Button
-        android:id="@+id/add_wish"
-        android:text="Enregistre"
-        android:background="@drawable/shape_custom_button_red"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:gravity="center"
+            android:orientation="vertical">
+            <ImageButton
+                android:id="@+id/select_image_in_gallery"
+                android:backgroundTint="?attr/colorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="20dp"/>
+            <EditText
+                android:id="@+id/wish_title"
+                android:hint="Titre"
+                android:maxLength="20"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="20dp"/>
+            <EditText
+                android:id="@+id/wish_description"
+                android:hint="Description"
+                android:maxLength="200"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="20dp"/>
+            <EditText
+                android:id="@+id/add_wish_product_url"
+                android:hint="Url du produit !"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="20dp"/>
+            <Button
+                android:id="@+id/add_wish"
+                android:text="Enregistre"
+                android:background="@drawable/shape_custom_button_red"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
 
-</LinearLayout>
+
+
+
+</ScrollView>

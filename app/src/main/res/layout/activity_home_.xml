@@ -15,8 +15,28 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             style="@style/Home_Activity.ToolBar"
-            app:title="@string/app_name"
             app:popupTheme="@style/PopupOverlay">
+            <RelativeLayout
+                android:id="@+id/gift_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingRight="10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="wishlist"
+                    android:textStyle="bold"
+                    android:textSize="20sp"/>
+                <ImageButton
+                    android:id="@+id/gift_button"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:backgroundTint="?attr/colorPrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
 
         </android.support.v7.widget.Toolbar>
 

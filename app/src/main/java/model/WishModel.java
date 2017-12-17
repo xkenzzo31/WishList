@@ -13,7 +13,7 @@ public class WishModel {
     private String image;
     private String description;
     private String productUrl;
-    private boolean status;
+    private boolean status = false;
 
     public WishModel(String title, String image, String description, String productUrl) {
         this.title = title;

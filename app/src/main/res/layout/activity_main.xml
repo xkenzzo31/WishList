@@ -27,6 +27,7 @@
         android:id="@+id/mot_de_passe"
         style="@style/MainActivity.Edit"
         android:hint="@string/mot_de_passe"
+        android:password="true"
         android:text="1234567"
         />
     <View

@@ -92,6 +92,8 @@ public class MyWishListFragment extends Fragment {
                 final Dialog dialog = new Dialog(getActivity());
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.custom_add_wish);
+                Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(i, RESULT_LOAD_IMAGE);
                 //set size  dialog
                 Utils.GetScreenSize getScreenSize = new Utils.GetScreenSize(getActivity());
                 width = getScreenSize.getScreenWidht() - (int) dpToPixels(35,getActivity());
@@ -116,42 +118,47 @@ public class MyWishListFragment extends Fragment {
                         startActivityForResult(i, RESULT_LOAD_IMAGE);
                     }
                 });
-                title.setText(Calendar.getInstance().getTime().getTime() + "");
-                description.setText(Calendar.getInstance().getTime().getTime() + "");
-                urlWish.setText(Calendar.getInstance().getTime().getTime() + "");
+                title.setText("Iphone X");
+                description.setText("Magnifique iphone X tout neuf ");
+                urlWish.setText("Apple.com");
                 setWishInFirebase.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         dialog.dismiss();
 
-
-                        Uri file = selectedImagePath;
-                        StorageReference riversRef = storageRef.child("images/"+userService.getFirebaseUser().getUid()+"/"+file.getLastPathSegment());
-                        UploadTask uploadTask = riversRef.putFile(file);
+                        userService.updateWisherAsync(new SuccessCallback<Wisher>() {
+                            @Override
+                            public void onSuccess(Wisher wisher) {
+                                Uri file = selectedImagePath;
+                                StorageReference riversRef = storageRef.child("images/"+userService.getFirebaseUser().getUid()+"/"+wisher.getWishs().size()+"/"+file.getLastPathSegment());
+                                UploadTask uploadTask = riversRef.putFile(file);
 
 // Register observers to listen for when the download is done or if it fails
-                        uploadTask.addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception exception) {
-                                // Handle unsuccessful uploads
-                            }
-                        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-                                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                                final WishModel wishModel = new WishModel(title.getText().toString(), downloadUrl.toString(),description.getText().toString(),urlWish.getText().toString());
-
-                                userService.addWish(wishModel, new OnSuccessListener<Void>() {
-
+                                uploadTask.addOnFailureListener(new OnFailureListener() {
                                     @Override
-                                    public void onSuccess(Void aVoid) {
+                                    public void onFailure(@NonNull Exception exception) {
+                                        // Handle unsuccessful uploads
+                                    }
+                                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                                        final WishModel wishModel = new WishModel(title.getText().toString(), downloadUrl.toString(),description.getText().toString(),urlWish.getText().toString());
 
-                                        userService.getWisher().getWishs().add(wishModel);
+                                        userService.addWish(wishModel, new OnSuccessListener<Void>() {
+
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+
+                                                userService.getWisher().getWishs().add(wishModel);
+                                            }
+                                        });
                                     }
                                 });
                             }
                         });
+
 
 
                     }
@@ -165,7 +172,7 @@ public class MyWishListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        final ListView wishListView = getActivity().findViewById(R.id.list_wishs);
+        ListView wishListView = getActivity().findViewById(R.id.list_wishs);
         mDatabase.child("users").child(userService.getFirebaseUser().getUid()).child("wishs")
                 .addChildEventListener(new ChildEventListener() {
                     @Override
@@ -174,8 +181,8 @@ public class MyWishListFragment extends Fragment {
                         userService.updateWisherAsync(new SuccessCallback<Wisher>() {
                             @Override
                             public void onSuccess(Wisher wisher) {
-                                WishAdapteur wishAdapteur =
-                                        new WishAdapteur(getActivity(), new ArrayList<>(wisher.getWishs()));
+                                ListView wishListView = getActivity().findViewById(R.id.list_wishs);
+                                WishAdapteur wishAdapteur = new WishAdapteur(getActivity(), userService.getWishtHave(wisher.getWishs()),wisher.getWishs());
                                 wishListView.setAdapter(wishAdapteur);
                             }
                         });
@@ -184,11 +191,28 @@ public class MyWishListFragment extends Fragment {
 
                     @Override
                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+                        userService.updateWisherAsync(new SuccessCallback<Wisher>() {
+                            @Override
+                            public void onSuccess(Wisher wisher) {
+                                ListView wishListView = getActivity().findViewById(R.id.list_wishs);
+                                WishAdapteur wishAdapteur =
+                                        new WishAdapteur(getActivity(), userService.getWishtHave(wisher.getWishs()),wisher.getWishs());
+                                wishListView.setAdapter(wishAdapteur);
+                            }
+                        });
                     }
 
                     @Override
                     public void onChildRemoved(DataSnapshot dataSnapshot) {
+                        userService.updateWisherAsync(new SuccessCallback<Wisher>() {
+                            @Override
+                            public void onSuccess(Wisher wisher) {
+                                ListView wishListView = getActivity().findViewById(R.id.list_wishs);
+                                WishAdapteur wishAdapteur =
+                                        new WishAdapteur(getActivity(), userService.getWishtHave(wisher.getWishs()),wisher.getWishs());
+                                wishListView.setAdapter(wishAdapteur);
+                            }
+                        });
 
                     }
 

@@ -20,6 +20,7 @@
             android:id="@+id/register_mdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:password="true"
             android:hint="Mot de passe"/>
     </LinearLayout>
 

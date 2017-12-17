@@ -1,5 +1,6 @@
 package com.example.lucas.wishlist.activity;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,13 +15,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.example.lucas.wishlist.R;
+import com.google.android.gms.tasks.Task;
 
 import fragment.MyWishListFragment;
 import fragment.FriendsFragment;
 import model.Wisher;
 import services.UserService;
+import utils.Utils;
 
 public class HomeActivity extends AppCompatActivity implements MyWishListFragment.Provider {
 
@@ -56,6 +62,23 @@ public class HomeActivity extends AppCompatActivity implements MyWishListFragmen
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        final RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.gift_layout);
+        relativeLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                int size =  (int) (relativeLayout.getHeight() - Utils.dpToPixels(3,HomeActivity.this));
+                ImageButton imageButton = (ImageButton) findViewById(R.id.gift_button);
+                imageButton.setImageBitmap(Utils.resizeBitmap(Utils.getBitmapFromVectorDrawable(HomeActivity.this,R.drawable.ic_card_giftcard_black_24dp),size,size));
+                imageButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(HomeActivity.this, MyWishsActivity.class);
+                        startActivity(intent);
+                    }
+                });
+            }
+        });
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
 

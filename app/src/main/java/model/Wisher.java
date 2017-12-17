@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class Wisher {
     private String email;
-    private List<WishModel> wishs = new ArrayList<>();
+    private ArrayList<WishModel> wishs = new ArrayList<>();
     public Wisher(String email) {
         this.email = email;
 
@@ -24,11 +24,11 @@ public class Wisher {
     public Wisher() {
     }
 
-    public List<WishModel> getWishs() {
+    public ArrayList<WishModel> getWishs() {
         return wishs;
     }
 
-    public void setWishs(List<WishModel> wishs) {
+    public void setWishs(ArrayList<WishModel> wishs) {
         this.wishs = wishs;
     }
 
@@ -55,8 +55,8 @@ public class Wisher {
             if ("email".equals(ds.getKey())) {
                 wisher.setEmail(ds.getValue(String.class));
             } else if ("wishs".equals(ds.getKey())) {
-                GenericTypeIndicator<List<WishModel>> t = new GenericTypeIndicator<List<WishModel>>() {};
-                List<WishModel> list = ds.getValue(t);
+                GenericTypeIndicator<ArrayList<WishModel>> t = new GenericTypeIndicator<ArrayList<WishModel>>() {};
+                ArrayList<WishModel> list = ds.getValue(t);
                 wisher.getWishs().addAll(list);
             }
         }

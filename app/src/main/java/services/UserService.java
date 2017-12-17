@@ -22,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -45,8 +46,8 @@ public class UserService {
     private static DatabaseReference mDatabase;
 
     private Activity activity;
-
-    private FirebaseAuth mAuth;
+    //TODO a voir si on peux évité le static !
+    private static FirebaseAuth mAuth;
 
     private Wisher wisher;
     private FirebaseStorage storage = FirebaseStorage.getInstance("gs://wichlist-d0196.appspot.com");
@@ -83,33 +84,21 @@ public class UserService {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            mDatabase.child("users").child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            updateWisherAsync(new SuccessCallback<Wisher>() {
                                 @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    wisher = Wisher.fromDataSnapshot(dataSnapshot);
+                                public void onSuccess(Wisher wisher) {
+                                    mDatabase.child("users").child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            successCallback.onSuccess(null);
 
-                                    mDatabase.child("users").orderByChild("email").equalTo("t@dddt.fr")
-                                            .addListenerForSingleValueEvent(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                                    Iterator<DataSnapshot> childrenIterator = dataSnapshot.getChildren().iterator();
-                                                    while (childrenIterator.hasNext()) {
-                                                        Wisher friend = Wisher.fromDataSnapshot(childrenIterator.next());
-                                                        successCallback.onSuccess(null);
-                                                    }
-                                                }
+                                        }
 
-                                                @Override
-                                                public void onCancelled(DatabaseError databaseError) {
-                                                    databaseError.getDetails();
-                                                }
-                                            });
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
 
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
+                                        }
+                                    });
                                 }
                             });
                         } else {
@@ -155,16 +144,11 @@ public class UserService {
         ;
     }
 
-    public void pushFireBase() {
-        UsersModel usersModel = new UsersModel(mAuth.getUid());
-        mDatabase.child("Users").child(usersModel.getIdUser()).setValue(usersModel);
-    }
-
     public Wisher getWisher() {
         return wisher;
     }
 
-    public void updateWisherAsync(final SuccessCallback<Wisher> successCallback) {
+    public  void updateWisherAsync(final SuccessCallback<Wisher> successCallback) {
         mDatabase.child("users").child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -193,6 +177,39 @@ public class UserService {
                                 onSuccessListener.onSuccess(aVoid);
                             }
                         });
+            }
+        });
+    }
+    public ArrayList<WishModel> getWishDontHave(ArrayList<WishModel> allWish){
+         ArrayList<WishModel> result = new ArrayList<>();
+         for (WishModel wish: allWish){
+             if (wish!=null){
+                 if (wish.isStatus()){
+                     result.add(wish);
+                 }
+             }
+         }
+         return result;
+    }
+    public static void removeChild(int id){
+        mDatabase.child("users").child(mAuth.getUid()).child("wishs").child(id+"").removeValue();
+    }
+    public ArrayList<WishModel> getWishtHave(ArrayList<WishModel> allWish){
+         ArrayList<WishModel> result = new ArrayList<>();
+         for (WishModel wish: allWish){
+             if (wish!=null){
+                 if (!wish.isStatus()){
+                     result.add(wish);
+                 }
+             }
+         }
+         return result;
+    }
+    public static void updateWish(final WishModel updateWish,int position, final  OnSuccessListener<Void> onSuccessListener){
+        mDatabase.child("users").child(mAuth.getUid()).child("wishs").child(position+"").setValue(updateWish).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                onSuccessListener.onSuccess(aVoid);
             }
         });
     }

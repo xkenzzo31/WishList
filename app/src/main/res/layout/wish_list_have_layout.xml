@@ -11,18 +11,18 @@
         android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/wish_picture"
+                android:id="@+id/wish_picture_have"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <TextView
-                android:id="@+id/wish_title"
+                android:id="@+id/wish_title_have"
                 android:textSize="30sp"
                 android:gravity="center"
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <TextView
-                android:id="@+id/wish_description"
+                android:id="@+id/wish_description_have"
                 android:textSize="30sp"
                 android:gravity="center"
                 android:textStyle="italic"
@@ -36,7 +36,7 @@
         android:orientation="vertical"
         android:padding="5dp">
         <Button
-            android:id="@+id/go_product_buy_page"
+            android:id="@+id/deelet_button_wish"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Acheté"
@@ -46,10 +46,10 @@
             android:layout_width="0dp"
             android:layout_height="10dp"/>
         <Button
-            android:id="@+id/product_is_buy"
+            android:id="@+id/product_not_buy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Je les !"
+            android:text="Je les plus !"
             android:background="@drawable/shape_custom_button_grey"
             />
     </LinearLayout>
