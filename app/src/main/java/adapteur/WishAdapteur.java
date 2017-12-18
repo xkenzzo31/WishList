@@ -19,8 +19,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.SizeReadyCallback;
+
 import com.example.lucas.wishlist.R;
 
 import java.io.IOException;
@@ -123,8 +122,7 @@ public class WishAdapteur extends ArrayAdapter<WishModel> {
             haveProduc.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    remove(mWish);
-                    notifyDataSetChanged();
+                    userService.updateWishWishButton(mWish.getImage(),true);
 
                 }
             });
@@ -135,7 +133,7 @@ public class WishAdapteur extends ArrayAdapter<WishModel> {
 
     @Override
     public void remove(@Nullable WishModel object) {
-        userService.updateWishWishButton(object.getImage(),true);
+
         super.remove(object);
     }
 
