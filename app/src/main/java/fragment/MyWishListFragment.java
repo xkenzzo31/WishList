@@ -173,59 +173,59 @@ public class MyWishListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         ListView wishListView = getActivity().findViewById(R.id.list_wishs);
-        mDatabase.child("users").child(userService.getFirebaseUser().getUid()).child("wishs")
-                .addChildEventListener(new ChildEventListener() {
+        userService.updateAdapter(new UserService.WishListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                //TODO update UI
+                userService.updateWisherAsync(new SuccessCallback<Wisher>() {
                     @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    //TODO update UI
-                        userService.updateWisherAsync(new SuccessCallback<Wisher>() {
-                            @Override
-                            public void onSuccess(Wisher wisher) {
-                                ListView wishListView = getActivity().findViewById(R.id.list_wishs);
-                                WishAdapteur wishAdapteur = new WishAdapteur(getActivity(), userService.getWishtHave(wisher.getWishs()),wisher.getWishs());
-                                wishListView.setAdapter(wishAdapteur);
-                            }
-                        });
-
-                    }
-
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                        userService.updateWisherAsync(new SuccessCallback<Wisher>() {
-                            @Override
-                            public void onSuccess(Wisher wisher) {
-                                ListView wishListView = getActivity().findViewById(R.id.list_wishs);
-                                WishAdapteur wishAdapteur =
-                                        new WishAdapteur(getActivity(), userService.getWishtHave(wisher.getWishs()),wisher.getWishs());
-                                wishListView.setAdapter(wishAdapteur);
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-                        userService.updateWisherAsync(new SuccessCallback<Wisher>() {
-                            @Override
-                            public void onSuccess(Wisher wisher) {
-                                ListView wishListView = getActivity().findViewById(R.id.list_wishs);
-                                WishAdapteur wishAdapteur =
-                                        new WishAdapteur(getActivity(), userService.getWishtHave(wisher.getWishs()),wisher.getWishs());
-                                wishListView.setAdapter(wishAdapteur);
-                            }
-                        });
-
-                    }
-
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
+                    public void onSuccess(Wisher wisher) {
+                        ListView wishListView = getActivity().findViewById(R.id.list_wishs);
+                        WishAdapteur wishAdapteur = new WishAdapteur( getActivity(), userService.getWishtHave(wisher.getWishs()));
+                        wishListView.setAdapter(wishAdapteur);
                     }
                 });
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                userService.updateWisherAsync(new SuccessCallback<Wisher>() {
+                    @Override
+                    public void onSuccess(Wisher wisher) {
+                        ListView wishListView = getActivity().findViewById(R.id.list_wishs);
+                        WishAdapteur wishAdapteur =
+                                new WishAdapteur(getActivity(), userService.getWishtHave(wisher.getWishs()));
+                        wishListView.setAdapter(wishAdapteur);
+                    }
+                });
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                userService.updateWisherAsync(new SuccessCallback<Wisher>() {
+                    @Override
+                    public void onSuccess(Wisher wisher) {
+                        ListView wishListView = getActivity().findViewById(R.id.list_wishs);
+                        WishAdapteur wishAdapteur =
+                                new WishAdapteur(getActivity(), userService.getWishtHave(wisher.getWishs()));
+                        wishListView.setAdapter(wishAdapteur);
+                    }
+                });
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

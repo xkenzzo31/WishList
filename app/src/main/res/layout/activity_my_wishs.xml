@@ -6,6 +6,8 @@
     tools:context="com.example.lucas.wishlist.activity.MyWishsActivity">
     <ListView
         android:id="@+id/list_wishs_have"
+        android:divider="@null"
+        android:dividerHeight="0dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
