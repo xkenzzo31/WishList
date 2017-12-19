@@ -78,7 +78,7 @@ public class FriendsFragment extends Fragment {
                         if (isValidEmail(add_friend_text.getText().toString())){
 
 
-                            FriendModel friendModel = new FriendModel(add_friend_text.getText().toString());
+                            FriendModel friendModel = new FriendModel(add_friend_text.getText().toString(),false);
                             mUserService.addFriend(friendModel, new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
@@ -105,7 +105,7 @@ public class FriendsFragment extends Fragment {
 
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                mUserService.updateWisherAsync(new SuccessCallback<Wisher>() {
+                mUserService.updateFriendAsync(new SuccessCallback<Wisher>() {
                     @Override
                     public void onSuccess(Wisher wisher) {
                         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();

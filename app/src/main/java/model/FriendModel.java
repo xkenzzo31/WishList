@@ -1,16 +1,26 @@
 package model;
 
+import com.google.firebase.database.DataSnapshot;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * Created by lucas on 14/12/2017.
  */
 
 public class FriendModel {
-    private boolean status = false;
+    private boolean status;
     private String urlFriend;
 
 
-    public FriendModel(String urlFriend) {
+    public FriendModel(String urlFriend, boolean status) {
+        this.status = status;
         this.urlFriend = urlFriend;
+    }
+    public FriendModel(){
+
     }
 
     public String getUrlFriend() {
@@ -27,5 +37,23 @@ public class FriendModel {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    /**
+     * parse un dataSnapshot et le retourne en {@link List<FriendModel>}
+     * @param dataSnapshot
+     * @return {@link List<FriendModel>}
+     */
+
+    public static List<FriendModel> friendfromDataSnapshot(DataSnapshot dataSnapshot) {
+        List<FriendModel> friendModel = new ArrayList<>();
+        Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
+        while (iterator.hasNext()){
+            DataSnapshot ds = iterator.next();
+            if (!friendModel.contains(ds.getValue(FriendModel.class))){
+                friendModel.add(ds.getValue(FriendModel.class));
+            }
+        }
+        return friendModel;
     }
 }

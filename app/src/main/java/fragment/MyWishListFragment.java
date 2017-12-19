@@ -170,7 +170,7 @@ public class MyWishListFragment extends Fragment {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 //TODO update UI
-                userService.updateWisherAsync(new SuccessCallback<Wisher>() {
+                userService.updateWishAsync(new SuccessCallback<Wisher>() {
                     @Override
                     public void onSuccess(Wisher wisher) {
                         ListView wishListView = getActivity().findViewById(R.id.list_wishs);
@@ -183,7 +183,7 @@ public class MyWishListFragment extends Fragment {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                userService.updateWisherAsync(new SuccessCallback<Wisher>() {
+                userService.updateWishAsync(new SuccessCallback<Wisher>() {
                     @Override
                     public void onSuccess(Wisher wisher) {
                         ListView wishListView = getActivity().findViewById(R.id.list_wishs);
@@ -196,7 +196,7 @@ public class MyWishListFragment extends Fragment {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                userService.updateWisherAsync(new SuccessCallback<Wisher>() {
+                userService.updateWishAsync(new SuccessCallback<Wisher>() {
                     @Override
                     public void onSuccess(Wisher wisher) {
                         ListView wishListView = getActivity().findViewById(R.id.list_wishs);

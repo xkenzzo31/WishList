@@ -160,6 +160,43 @@ public class UserService {
         });
 
     }
+    public  void updateFriendAsync(final SuccessCallback<Wisher> successCallback) {
+
+                mDatabase.child("users").child(mAuth.getUid()).child("friend_request").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        wisher.getFriendModels().addAll(FriendModel.friendfromDataSnapshot(dataSnapshot));
+                        successCallback.onSuccess(wisher);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+
+
+            });
+
+    }
+        public  void updateWishAsync(final SuccessCallback<Wisher> successCallback) {
+
+
+                mDatabase.child("users").child(mAuth.getUid()).child("wishs").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        wisher.getWishs().addAll(WishModel.wishsfromDataSnapshot(dataSnapshot));
+                        successCallback.onSuccess(wisher);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+
+
+            });
+
+    }
 
     public void addWish(final WishModel newWish, final OnSuccessListener<Void> onSuccessListener) {
         updateWisherAsync(new SuccessCallback<Wisher>() {
