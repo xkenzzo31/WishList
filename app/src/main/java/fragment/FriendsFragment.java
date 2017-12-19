@@ -108,18 +108,7 @@ public class FriendsFragment extends Fragment {
                 mUserService.updateFriendAsync(new SuccessCallback<Wisher>() {
                     @Override
                     public void onSuccess(Wisher wisher) {
-                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-                        databaseReference.child("users").orderByChild(wisher.getFriendModels().get(wisher.getFriendModels().size()).getUrlFriend()).addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
 
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
                     }
                 });
             }

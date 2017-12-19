@@ -164,9 +164,15 @@ public class UserService {
 
                 mDatabase.child("users").child(mAuth.getUid()).child("friend_request").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        wisher.getFriendModels().addAll(FriendModel.friendfromDataSnapshot(dataSnapshot));
-                        successCallback.onSuccess(wisher);
+                    public void onDataChange(final DataSnapshot dataSnapshot) {
+                        updateWisherAsync(new SuccessCallback<Wisher>() {
+                            @Override
+                            public void onSuccess(Wisher wisher) {
+                                wisher.getFriendModels().addAll(FriendModel.friendfromDataSnapshot(dataSnapshot));
+                                successCallback.onSuccess(wisher);
+                            }
+                        });
+
                     }
 
                     @Override
@@ -179,13 +185,17 @@ public class UserService {
 
     }
         public  void updateWishAsync(final SuccessCallback<Wisher> successCallback) {
-
-
                 mDatabase.child("users").child(mAuth.getUid()).child("wishs").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        wisher.getWishs().addAll(WishModel.wishsfromDataSnapshot(dataSnapshot));
-                        successCallback.onSuccess(wisher);
+                    public void onDataChange(final DataSnapshot dataSnapshot) {
+                        updateWisherAsync(new SuccessCallback<Wisher>() {
+                            @Override
+                            public void onSuccess(Wisher wisher) {
+                                wisher.getWishs().addAll(WishModel.wishsfromDataSnapshot(dataSnapshot));
+                                successCallback.onSuccess(wisher);
+                            }
+                        });
+
                     }
 
                     @Override
