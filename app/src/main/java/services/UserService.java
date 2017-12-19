@@ -309,6 +309,17 @@ public class UserService {
          return result;
     }
 
+    public boolean haveFriend(List<FriendModel> list, FriendModel model){
+        boolean result = false;
+        for (FriendModel friendModel : list){
+            if (friendModel.getUrlFriend().equals(model.getUrlFriend())){
+                result = true;
+            }
+        }
+        return result;
+    }
+
+
     public void updateWishWishButton(WishModel updateWish, int position, final  OnSuccessListener<Void> onSuccessListener){
         mDatabase.child("users").child(mAuth.getUid()).child("wishs").child(position+"").setValue(updateWish).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override

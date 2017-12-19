@@ -68,7 +68,6 @@ public class Wisher {
             }
             else if ("friend_request".equals(ds.getKey())) {
                 GenericTypeIndicator<List<FriendModel>> t = new GenericTypeIndicator<List<FriendModel>>() {};
-                //TODO ligne qui crash
                 List<FriendModel> list = ds.getValue(t);
                 wisher.getFriendModels().addAll(list);
             }

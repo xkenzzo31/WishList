@@ -79,46 +79,57 @@ public class FriendsFragment extends Fragment {
                     public void onClick(View view) {
                         if (isValidEmail(add_friend_text.getText().toString())){
                             final DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
-                            mRef.child("users").addValueEventListener(new ValueEventListener() {
+                            mRef.child("users").orderByChild("email").equalTo(add_friend_text.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(final DataSnapshot dataSnapshot) {
-                                    HashMap<String,HashMap<String, String>> test = new HashMap<>();
-                                    test.putAll((Map<? extends String, ? extends HashMap<String, String>>) dataSnapshot.getValue());
-                                    final Wisher friendWisher = Wisher.fromDataSnapshot(dataSnapshot.child(test.keySet().iterator().next()));
-                                    if (friendWisher.getEmail().equals(add_friend_text.getText().toString())){
-                                        mUserService.updateWisherAsync(new SuccessCallback<Wisher>() {
-                                            @Override
-                                            public void onSuccess(Wisher wisher) {
-                                                int i = 0;
-                                                for (FriendModel email : friendWisher.getFriendModels()){
-                                                    i++;
-                                                    if (email.getUrlFriend().equals(wisher.getEmail())){
-                                                        mRef.child("users").child(dataSnapshot.getKey()).child("request_friend").child(i+"").child("status").setValue(true);
-                                                        FriendModel friendModel = new FriendModel(add_friend_text.getText().toString(),true);
-                                                        mUserService.addFriend(friendModel, new OnSuccessListener<Void>() {
-                                                            @Override
-                                                            public void onSuccess(Void aVoid) {
+                                    if (dataSnapshot.getValue() != null) {
+                                        final HashMap<String,HashMap<String, String>> test = new HashMap<>();
+                                        test.putAll((Map<? extends String, ? extends HashMap<String, String>>) dataSnapshot.getValue());
+                                        final Wisher friendWisher = Wisher.fromDataSnapshot(dataSnapshot.child(test.keySet().iterator().next()));
+                                        if (friendWisher.getEmail().equals(add_friend_text.getText().toString())){
+                                            mUserService.updateWisherAsync(new SuccessCallback<Wisher>() {
+                                                @Override
+                                                public void onSuccess(Wisher wisher) {
+                                                    int i = 0;
+                                                    for (FriendModel email : friendWisher.getFriendModels()){
+                                                        if (email.getUrlFriend().equals(wisher.getEmail())){
+                                                            mRef.child("users").child(test.keySet().iterator().next()).child("friend_request").child(i+"").child("status").setValue(true);
+                                                            FriendModel friendModel = new FriendModel(add_friend_text.getText().toString(),true);
+                                                            if (!mUserService.haveFriend(wisher.getFriendModels(), friendModel)){
+                                                                mUserService.addFriend(friendModel, new OnSuccessListener<Void>() {
+                                                                    @Override
+                                                                    public void onSuccess(Void aVoid) {
 
+                                                                    }
+                                                                });
                                                             }
-                                                        });
-                                                    } else {
-                                                        FriendModel friendModel = new FriendModel(add_friend_text.getText().toString(),false);
-                                                        mUserService.addFriend(friendModel, new OnSuccessListener<Void>() {
-                                                            @Override
-                                                            public void onSuccess(Void aVoid) {
 
+                                                        } else {
+                                                            FriendModel friendModel = new FriendModel(add_friend_text.getText().toString(),false);
+                                                            if (!mUserService.haveFriend(wisher.getFriendModels(), friendModel)){
+                                                                mUserService.addFriend(friendModel, new OnSuccessListener<Void>() {
+                                                                    @Override
+                                                                    public void onSuccess(Void aVoid) {
+
+                                                                    }
+                                                                });
                                                             }
-                                                        });
+
+                                                        }
+                                                        i++;
+
                                                     }
 
                                                 }
+                                            });
 
-                                            }
-                                        });
-
-                                    } else{
+                                        } else{
+                                            Toast.makeText(getActivity(), "L'utilisateur n'existe pas",Toast.LENGTH_LONG).show();
+                                        }
+                                    } else {
                                         Toast.makeText(getActivity(), "L'utilisateur n'existe pas",Toast.LENGTH_LONG).show();
                                     }
+
                                 }
 
                                 @Override

@@ -16,8 +16,8 @@ public class FriendModel {
 
 
     public FriendModel(String urlFriend, boolean status) {
-        this.status = status;
         this.urlFriend = urlFriend;
+        this.status = status;
     }
     public FriendModel(){
 
