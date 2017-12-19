@@ -165,7 +165,6 @@ public class MyWishListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ListView wishListView = getActivity().findViewById(R.id.list_wishs);
         userService.updateAdapterWish(new UserService.WishListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {

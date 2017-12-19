@@ -168,7 +168,6 @@ public class UserService {
                         updateWisherAsync(new SuccessCallback<Wisher>() {
                             @Override
                             public void onSuccess(Wisher wisher) {
-                                wisher.getFriendModels().addAll(FriendModel.friendfromDataSnapshot(dataSnapshot));
                                 successCallback.onSuccess(wisher);
                             }
                         });
@@ -191,7 +190,6 @@ public class UserService {
                         updateWisherAsync(new SuccessCallback<Wisher>() {
                             @Override
                             public void onSuccess(Wisher wisher) {
-                                wisher.getWishs().addAll(WishModel.wishsfromDataSnapshot(dataSnapshot));
                                 successCallback.onSuccess(wisher);
                             }
                         });
@@ -258,6 +256,7 @@ public class UserService {
     public void updateAdapterFriend(WishListener wishListener){
         mDatabase.child("users").child(mAuth.getUid()).child("friend_request").addChildEventListener(wishListener);
     }
+
 
     public interface WishListener extends ChildEventListener{
         @Override

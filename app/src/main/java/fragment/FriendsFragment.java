@@ -26,7 +26,9 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ThrowOnExtraProperties;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import core.SuccessCallback;
 import model.FriendModel;
@@ -52,7 +54,7 @@ public class FriendsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, final Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_show_wish1,container,false);
-        AddFloatingActionButton add_friend = rootView.findViewById(R.id.add_friend);
+        final AddFloatingActionButton add_friend = rootView.findViewById(R.id.add_friend);
         mUserService = new UserService(getActivity());
         add_friend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,15 +78,55 @@ public class FriendsFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         if (isValidEmail(add_friend_text.getText().toString())){
-
-
-                            FriendModel friendModel = new FriendModel(add_friend_text.getText().toString(),false);
-                            mUserService.addFriend(friendModel, new OnSuccessListener<Void>() {
+                            final DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
+                            mRef.child("users").addValueEventListener(new ValueEventListener() {
                                 @Override
-                                public void onSuccess(Void aVoid) {
+                                public void onDataChange(final DataSnapshot dataSnapshot) {
+                                    HashMap<String,HashMap<String, String>> test = new HashMap<>();
+                                    test.putAll((Map<? extends String, ? extends HashMap<String, String>>) dataSnapshot.getValue());
+                                    final Wisher friendWisher = Wisher.fromDataSnapshot(dataSnapshot.child(test.keySet().iterator().next()));
+                                    if (friendWisher.getEmail().equals(add_friend_text.getText().toString())){
+                                        mUserService.updateWisherAsync(new SuccessCallback<Wisher>() {
+                                            @Override
+                                            public void onSuccess(Wisher wisher) {
+                                                int i = 0;
+                                                for (FriendModel email : friendWisher.getFriendModels()){
+                                                    i++;
+                                                    if (email.getUrlFriend().equals(wisher.getEmail())){
+                                                        mRef.child("users").child(dataSnapshot.getKey()).child("request_friend").child(i+"").child("status").setValue(true);
+                                                        FriendModel friendModel = new FriendModel(add_friend_text.getText().toString(),true);
+                                                        mUserService.addFriend(friendModel, new OnSuccessListener<Void>() {
+                                                            @Override
+                                                            public void onSuccess(Void aVoid) {
+
+                                                            }
+                                                        });
+                                                    } else {
+                                                        FriendModel friendModel = new FriendModel(add_friend_text.getText().toString(),false);
+                                                        mUserService.addFriend(friendModel, new OnSuccessListener<Void>() {
+                                                            @Override
+                                                            public void onSuccess(Void aVoid) {
+
+                                                            }
+                                                        });
+                                                    }
+
+                                                }
+
+                                            }
+                                        });
+
+                                    } else{
+                                        Toast.makeText(getActivity(), "L'utilisateur n'existe pas",Toast.LENGTH_LONG).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
 
                                 }
                             });
+
                         }
                     }
                 });
@@ -109,13 +151,20 @@ public class FriendsFragment extends Fragment {
                     @Override
                     public void onSuccess(Wisher wisher) {
 
+
                     }
                 });
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                mUserService.updateFriendAsync(new SuccessCallback<Wisher>() {
+                    @Override
+                    public void onSuccess(Wisher wisher) {
 
+
+                    }
+                });
             }
 
             @Override

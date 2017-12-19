@@ -79,9 +79,11 @@ public class WishModel {
     public static List<WishModel> wishsfromDataSnapshot(DataSnapshot dataSnapshot) {
         List<WishModel> wishList = new ArrayList<>();
         Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
+        int i = 0;
         while (iterator.hasNext()){
+            i++;
             DataSnapshot ds = iterator.next();
-            if (!wishList.contains(ds.getValue(WishModel.class))){
+            if (wishList.get(wishList.size()) == ds.getValue(WishModel.class)){
                 wishList.add(ds.getValue(WishModel.class));
             }
         }
