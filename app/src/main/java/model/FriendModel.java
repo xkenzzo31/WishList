@@ -1,5 +1,7 @@
 package model;
 
+import android.support.annotation.NonNull;
+
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
@@ -11,8 +13,9 @@ import java.util.List;
  */
 
 public class FriendModel {
-    private boolean status;
+
     private String urlFriend;
+    private boolean status;
 
 
     public FriendModel(String urlFriend, boolean status) {

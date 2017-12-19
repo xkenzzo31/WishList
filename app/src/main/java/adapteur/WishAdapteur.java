@@ -55,8 +55,8 @@ public class WishAdapteur extends ArrayAdapter<WishModel> {
             convertView = LayoutInflater.from(getContext())
                     .inflate(R.layout.wish_list_layout, parent, false);
         }
-        final WishModel mWish = getItem(position);
-        if (mWish.isStatus()){
+        final WishModel iWish = getItem(position);
+        if (iWish.isStatus()){
             //set XML
             ImageView imageView = (ImageView) convertView.findViewById(R.id.wish_picture);
             TextView title = (TextView) convertView.findViewById(R.id.wish_title);
@@ -67,15 +67,15 @@ public class WishAdapteur extends ArrayAdapter<WishModel> {
 
             //set atribute
             AsyncTaskLoadImage asyncTaskLoadImage = new AsyncTaskLoadImage(imageView);
-            asyncTaskLoadImage.execute(mWish.getImage());
+            asyncTaskLoadImage.execute(iWish.getImage());
             openProduct.setText("Acheté");
             haveProduc.setText("Je les plus !");
-            title.setText(mWish.getTitle());
-            descrip.setText(mWish.getDescription());
+            title.setText(iWish.getTitle());
+            descrip.setText(iWish.getDescription());
             openProduct.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String url = mWish.getProductUrl();
+                    String url = iWish.getProductUrl();
                     if (!url.startsWith("http://") && !url.startsWith("https://")){
                         url = "http://"+url;
                     }
@@ -87,7 +87,7 @@ public class WishAdapteur extends ArrayAdapter<WishModel> {
             haveProduc.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    userService.updateWishWishButton(mWish.getImage(),false);
+                    userService.updateWishWishButton(iWish.getImage(),false);
 
                 }
             });
@@ -105,13 +105,13 @@ public class WishAdapteur extends ArrayAdapter<WishModel> {
             openProduct.setText("Acheté");
             haveProduc.setText("Je les !");
             AsyncTaskLoadImage asyncTaskLoadImage = new AsyncTaskLoadImage(imageView);
-            asyncTaskLoadImage.execute(mWish.getImage());
-            title.setText(mWish.getTitle());
-            descrip.setText(mWish.getDescription());
+            asyncTaskLoadImage.execute(iWish.getImage());
+            title.setText(iWish.getTitle());
+            descrip.setText(iWish.getDescription());
             openProduct.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String url = mWish.getProductUrl();
+                    String url = iWish.getProductUrl();
                     if (!url.startsWith("http://") && !url.startsWith("https://")){
                         url = "http://"+url;
                     }
@@ -122,7 +122,7 @@ public class WishAdapteur extends ArrayAdapter<WishModel> {
             haveProduc.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    userService.updateWishWishButton(mWish.getImage(),true);
+                    userService.updateWishWishButton(iWish.getImage(),true);
 
                 }
             });

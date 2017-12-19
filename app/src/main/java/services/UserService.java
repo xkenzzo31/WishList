@@ -3,6 +3,7 @@ package services;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.widget.ListView;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -162,47 +163,57 @@ public class UserService {
     }
     public  void updateFriendAsync(final SuccessCallback<Wisher> successCallback) {
 
-                mDatabase.child("users").child(mAuth.getUid()).child("friend_request").addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child("users").child(mAuth.getUid()).child("friend_request").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(final DataSnapshot dataSnapshot) {
+                updateWisherAsync(new SuccessCallback<Wisher>() {
                     @Override
-                    public void onDataChange(final DataSnapshot dataSnapshot) {
-                        updateWisherAsync(new SuccessCallback<Wisher>() {
-                            @Override
-                            public void onSuccess(Wisher wisher) {
-                                successCallback.onSuccess(wisher);
-                            }
-                        });
-
+                    public void onSuccess(Wisher wisher) {
+                        successCallback.onSuccess(wisher);
                     }
+                });
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+            }
 
-                    }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
 
 
-            });
+        });
 
     }
-        public  void updateWishAsync(final SuccessCallback<Wisher> successCallback) {
-                mDatabase.child("users").child(mAuth.getUid()).child("wishs").addListenerForSingleValueEvent(new ValueEventListener() {
+    public List<FriendModel> friendHave(List<FriendModel> allFriend){
+        List<FriendModel> result = new ArrayList<>();
+        for (FriendModel friendModel : allFriend){
+            if (friendModel.isStatus()){
+                result.add(friendModel);
+            }
+        }
+        return result;
+    }
+
+    public  void updateWishAsync(final SuccessCallback<Wisher> successCallback) {
+        mDatabase.child("users").child(mAuth.getUid()).child("wishs").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(final DataSnapshot dataSnapshot) {
+                updateWisherAsync(new SuccessCallback<Wisher>() {
                     @Override
-                    public void onDataChange(final DataSnapshot dataSnapshot) {
-                        updateWisherAsync(new SuccessCallback<Wisher>() {
-                            @Override
-                            public void onSuccess(Wisher wisher) {
-                                successCallback.onSuccess(wisher);
-                            }
-                        });
-
+                    public void onSuccess(Wisher wisher) {
+                        successCallback.onSuccess(wisher);
                     }
+                });
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+            }
 
-                    }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
 
 
-            });
+        });
 
     }
 
@@ -240,15 +251,15 @@ public class UserService {
     }
 
     public ArrayList<WishModel> getWishDontHave(ArrayList<WishModel> allWish){
-         ArrayList<WishModel> result = new ArrayList<>();
-         for (WishModel wish: allWish){
-             if (wish!=null){
-                 if (wish.isStatus()){
-                     result.add(wish);
-                 }
-             }
-         }
-         return result;
+        ArrayList<WishModel> result = new ArrayList<>();
+        for (WishModel wish: allWish){
+            if (wish!=null){
+                if (wish.isStatus()){
+                    result.add(wish);
+                }
+            }
+        }
+        return result;
     }
     public void updateAdapterWish(WishListener wishListener){
         mDatabase.child("users").child(mAuth.getUid()).child("wishs").addChildEventListener(wishListener);
@@ -298,15 +309,15 @@ public class UserService {
     }
 
     public ArrayList<WishModel> getWishtHave(ArrayList<WishModel> allWish){
-         ArrayList<WishModel> result = new ArrayList<>();
-         for (WishModel wish: allWish){
-             if (wish!=null){
-                 if (!wish.isStatus()){
-                     result.add(wish);
-                 }
-             }
-         }
-         return result;
+        ArrayList<WishModel> result = new ArrayList<>();
+        for (WishModel wish: allWish){
+            if (wish!=null){
+                if (!wish.isStatus()){
+                    result.add(wish);
+                }
+            }
+        }
+        return result;
     }
 
     public boolean haveFriend(List<FriendModel> list, FriendModel model){

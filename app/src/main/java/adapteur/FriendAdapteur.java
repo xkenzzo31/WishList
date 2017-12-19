@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.example.lucas.wishlist.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import model.FriendModel;
 
@@ -21,7 +22,7 @@ import model.FriendModel;
  */
 
 public class FriendAdapteur extends ArrayAdapter<FriendModel>{
-    public FriendAdapteur(@NonNull Context context, @NonNull FriendModel[] objects) {
+    public FriendAdapteur(@NonNull Context context, @NonNull List<FriendModel> objects) {
         super(context, 0, objects);
     }
 
@@ -30,11 +31,12 @@ public class FriendAdapteur extends ArrayAdapter<FriendModel>{
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext())
-                    .inflate(R.layout.wish_list_layout, parent, false);
+                    .inflate(R.layout.layout_friend, parent, false);
         }
         FriendModel friendModel = getItem(position);
-        TextView tv = convertView.findViewById(R.id.friend_email);
-        tv.setText(friendModel.getUrlFriend());
+        TextView tv = (TextView) convertView.findViewById(R.id.friend_email_test);
+        String result = friendModel.getUrlFriend();
+        tv.setText(result);
         return convertView;
     }
 }

@@ -11,6 +11,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.lucas.wishlist.R;
@@ -30,6 +31,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import adapteur.FriendAdapteur;
 import core.SuccessCallback;
 import model.FriendModel;
 import model.Wisher;
@@ -161,7 +163,9 @@ public class FriendsFragment extends Fragment {
                 mUserService.updateFriendAsync(new SuccessCallback<Wisher>() {
                     @Override
                     public void onSuccess(Wisher wisher) {
-
+                        FriendAdapteur friendAdapteur = new FriendAdapteur(getActivity(),mUserService.friendHave(wisher.getFriendModels()));
+                        ListView listView = getActivity().findViewById(R.id.list_friend);
+                        listView.setAdapter(friendAdapteur);
 
                     }
                 });
@@ -172,7 +176,9 @@ public class FriendsFragment extends Fragment {
                 mUserService.updateFriendAsync(new SuccessCallback<Wisher>() {
                     @Override
                     public void onSuccess(Wisher wisher) {
-
+                        FriendAdapteur friendAdapteur = new FriendAdapteur(getActivity(),mUserService.friendHave(wisher.getFriendModels()));
+                        ListView listView = getActivity().findViewById(R.id.list_friend);
+                        listView.setAdapter(friendAdapteur);
 
                     }
                 });
