@@ -1,5 +1,7 @@
 package model;
 
+import android.widget.ListView;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.GenericTypeIndicator;
 
@@ -16,6 +18,7 @@ import java.util.Map;
 public class Wisher {
     private String email;
     private ArrayList<WishModel> wishs = new ArrayList<>();
+    private List<FriendModel> friendModels = new ArrayList<>();
     public Wisher(String email) {
         this.email = email;
 
@@ -26,6 +29,14 @@ public class Wisher {
 
     public ArrayList<WishModel> getWishs() {
         return wishs;
+    }
+
+    public List<FriendModel> getFriendModels() {
+        return friendModels;
+    }
+
+    public void setFriendModels(List<FriendModel> friendModels) {
+        this.friendModels = friendModels;
     }
 
     public void setWishs(ArrayList<WishModel> wishs) {
@@ -54,12 +65,21 @@ public class Wisher {
             DataSnapshot ds = iterator.next();
             if ("email".equals(ds.getKey())) {
                 wisher.setEmail(ds.getValue(String.class));
-            } else if ("wishs".equals(ds.getKey())) {
+            }
+            else if ("friend_request".equals(ds.getKey())) {
+                GenericTypeIndicator<List<FriendModel>> t = new GenericTypeIndicator<List<FriendModel>>() {};
+                //TODO ligne qui crash
+                List<FriendModel> list = ds.getValue(t);
+                wisher.getFriendModels().addAll(list);
+            }
+            else if ("wishs".equals(ds.getKey())) {
                 GenericTypeIndicator<ArrayList<WishModel>> t = new GenericTypeIndicator<ArrayList<WishModel>>() {};
                 ArrayList<WishModel> list = ds.getValue(t);
                 wisher.getWishs().addAll(list);
             }
         }
+
+
         return wisher;
     }
 }

@@ -8,6 +8,8 @@
     tools:context="com.example.lucas.wishlist.activity.HomeActivity$PlaceholderFragment">
     <ListView
         android:id="@+id/list_wishs"
+        android:divider="@null"
+        android:dividerHeight="0dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
         <com.getbase.floatingactionbutton.AddFloatingActionButton

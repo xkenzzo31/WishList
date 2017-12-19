@@ -1,10 +1,8 @@
 package services;
 
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,15 +22,14 @@ import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
 import core.Error;
 import core.FailCallback;
 import core.SuccessCallback;
+import model.FriendModel;
 import model.Wisher;
-import model.UsersModel;
 import model.WishModel;
 
 /**
@@ -163,6 +160,51 @@ public class UserService {
         });
 
     }
+    public  void updateFriendAsync(final SuccessCallback<Wisher> successCallback) {
+
+                mDatabase.child("users").child(mAuth.getUid()).child("friend_request").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(final DataSnapshot dataSnapshot) {
+                        updateWisherAsync(new SuccessCallback<Wisher>() {
+                            @Override
+                            public void onSuccess(Wisher wisher) {
+                                successCallback.onSuccess(wisher);
+                            }
+                        });
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+
+
+            });
+
+    }
+        public  void updateWishAsync(final SuccessCallback<Wisher> successCallback) {
+                mDatabase.child("users").child(mAuth.getUid()).child("wishs").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(final DataSnapshot dataSnapshot) {
+                        updateWisherAsync(new SuccessCallback<Wisher>() {
+                            @Override
+                            public void onSuccess(Wisher wisher) {
+                                successCallback.onSuccess(wisher);
+                            }
+                        });
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+
+
+            });
+
+    }
 
     public void addWish(final WishModel newWish, final OnSuccessListener<Void> onSuccessListener) {
         updateWisherAsync(new SuccessCallback<Wisher>() {
@@ -180,6 +222,23 @@ public class UserService {
             }
         });
     }
+    public void addFriend(final FriendModel newFriend, final OnSuccessListener<Void> onSuccessListener) {
+        updateWisherAsync(new SuccessCallback<Wisher>() {
+            @Override
+            public void onSuccess(Wisher wisher) {
+                mDatabase.child("users").child(mAuth.getUid()).child("friend_request")
+                        .child(wisher.getFriendModels().size() + "")
+                        .setValue(newFriend)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                onSuccessListener.onSuccess(aVoid);
+                            }
+                        });
+            }
+        });
+    }
+
     public ArrayList<WishModel> getWishDontHave(ArrayList<WishModel> allWish){
          ArrayList<WishModel> result = new ArrayList<>();
          for (WishModel wish: allWish){
@@ -191,9 +250,53 @@ public class UserService {
          }
          return result;
     }
-    public static void removeChild(int id){
-        mDatabase.child("users").child(mAuth.getUid()).child("wishs").child(id+"").removeValue();
+    public void updateAdapterWish(WishListener wishListener){
+        mDatabase.child("users").child(mAuth.getUid()).child("wishs").addChildEventListener(wishListener);
     }
+    public void updateAdapterFriend(WishListener wishListener){
+        mDatabase.child("users").child(mAuth.getUid()).child("friend_request").addChildEventListener(wishListener);
+    }
+
+
+    public interface WishListener extends ChildEventListener{
+        @Override
+        void onCancelled(DatabaseError databaseError);
+
+        @Override
+        void onChildAdded(DataSnapshot dataSnapshot, String s);
+
+        @Override
+        void onChildChanged(DataSnapshot dataSnapshot, String s);
+
+        @Override
+        void onChildRemoved(DataSnapshot dataSnapshot);
+
+        @Override
+        void onChildMoved(DataSnapshot dataSnapshot, String s);
+    }
+
+    public void updateWishWishButton(final String url, final boolean wishStatus ){
+        updateWisherAsync(new SuccessCallback<Wisher>() {
+            @Override
+            public void onSuccess(Wisher wisher) {
+                for(int i = 0 ; i < wisher.getWishs().size(); i++){
+                    if (wisher.getWishs().get(i).getImage().equals(url)){
+                        int result = i;
+                        WishModel wishModel = wisher.getWishs().get(i);
+                        wishModel.setStatus(wishStatus);
+                        updateWishWishButton(wishModel, result, new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+
+                            }
+                        });
+                    }
+                }
+            }
+        });
+
+    }
+
     public ArrayList<WishModel> getWishtHave(ArrayList<WishModel> allWish){
          ArrayList<WishModel> result = new ArrayList<>();
          for (WishModel wish: allWish){
@@ -205,7 +308,8 @@ public class UserService {
          }
          return result;
     }
-    public static void updateWish(final WishModel updateWish,int position, final  OnSuccessListener<Void> onSuccessListener){
+
+    public void updateWishWishButton(WishModel updateWish, int position, final  OnSuccessListener<Void> onSuccessListener){
         mDatabase.child("users").child(mAuth.getUid()).child("wishs").child(position+"").setValue(updateWish).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {

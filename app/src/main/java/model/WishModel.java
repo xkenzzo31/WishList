@@ -2,7 +2,10 @@ package model;
 
 import com.google.firebase.database.DataSnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by lucas on 06/12/2017.
@@ -71,5 +74,19 @@ public class WishModel {
 
     public void setProductUrl(String productUrl) {
         this.productUrl = productUrl;
+    }
+
+    public static List<WishModel> wishsfromDataSnapshot(DataSnapshot dataSnapshot) {
+        List<WishModel> wishList = new ArrayList<>();
+        Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
+        int i = 0;
+        while (iterator.hasNext()){
+            i++;
+            DataSnapshot ds = iterator.next();
+            if (wishList.get(wishList.size()) == ds.getValue(WishModel.class)){
+                wishList.add(ds.getValue(WishModel.class));
+            }
+        }
+        return wishList;
     }
 }

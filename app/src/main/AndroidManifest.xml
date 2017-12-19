@@ -27,7 +27,9 @@
             android:label="@string/title_activity_home_"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".activity.MyWishsActivity"></activity>
+        <activity android:name=".activity.MyWishsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
     </application>
 
 </manifest>
