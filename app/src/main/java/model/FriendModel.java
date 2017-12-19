@@ -5,8 +5,9 @@ package model;
  */
 
 public class FriendModel {
-    private String urlFriend;
     private boolean status = false;
+    private String urlFriend;
+
 
     public FriendModel(String urlFriend) {
         this.urlFriend = urlFriend;

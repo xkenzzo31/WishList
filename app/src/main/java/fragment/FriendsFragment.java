@@ -11,12 +11,26 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.lucas.wishlist.R;
 import com.getbase.floatingactionbutton.AddFloatingActionButton;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.common.collect.Iterators;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ThrowOnExtraProperties;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.Iterator;
+
+import core.SuccessCallback;
+import model.FriendModel;
+import model.Wisher;
 import services.UserService;
 import utils.Utils;
 
@@ -62,10 +76,15 @@ public class FriendsFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         if (isValidEmail(add_friend_text.getText().toString())){
-                            DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
 
-                            mRef.child("users").child("friend_request").push().setValue(mUserService.getFirebaseUser().getEmail(),add_friend_text.getText().toString());
 
+                            FriendModel friendModel = new FriendModel(add_friend_text.getText().toString());
+                            mUserService.addFriend(friendModel, new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+
+                                }
+                            });
                         }
                     }
                 });
@@ -73,5 +92,52 @@ public class FriendsFragment extends Fragment {
             }
         });
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mUserService.updateAdapterFriend(new UserService.WishListener() {
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                mUserService.updateWisherAsync(new SuccessCallback<Wisher>() {
+                    @Override
+                    public void onSuccess(Wisher wisher) {
+                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+                        databaseReference.child("users").orderByChild(wisher.getFriendModels().get(wisher.getFriendModels().size()).getUrlFriend()).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                });
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+        });
     }
 }

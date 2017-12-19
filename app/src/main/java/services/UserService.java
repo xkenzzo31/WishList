@@ -28,6 +28,7 @@ import java.util.logging.Logger;
 import core.Error;
 import core.FailCallback;
 import core.SuccessCallback;
+import model.FriendModel;
 import model.Wisher;
 import model.WishModel;
 
@@ -176,6 +177,23 @@ public class UserService {
             }
         });
     }
+    public void addFriend(final FriendModel newFriend, final OnSuccessListener<Void> onSuccessListener) {
+        updateWisherAsync(new SuccessCallback<Wisher>() {
+            @Override
+            public void onSuccess(Wisher wisher) {
+                mDatabase.child("users").child(mAuth.getUid()).child("friend_request")
+                        .child(wisher.getFriendModels().size() + "")
+                        .setValue(newFriend)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                onSuccessListener.onSuccess(aVoid);
+                            }
+                        });
+            }
+        });
+    }
+
     public ArrayList<WishModel> getWishDontHave(ArrayList<WishModel> allWish){
          ArrayList<WishModel> result = new ArrayList<>();
          for (WishModel wish: allWish){
@@ -187,9 +205,13 @@ public class UserService {
          }
          return result;
     }
-    public void updateAdapter (WishListener wishListener){
+    public void updateAdapterWish(WishListener wishListener){
         mDatabase.child("users").child(mAuth.getUid()).child("wishs").addChildEventListener(wishListener);
     }
+    public void updateAdapterFriend(WishListener wishListener){
+        mDatabase.child("users").child(mAuth.getUid()).child("friend_request").addChildEventListener(wishListener);
+    }
+
     public interface WishListener extends ChildEventListener{
         @Override
         void onCancelled(DatabaseError databaseError);

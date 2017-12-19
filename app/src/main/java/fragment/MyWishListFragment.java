@@ -26,8 +26,6 @@ import com.example.lucas.wishlist.R;
 import com.getbase.floatingactionbutton.AddFloatingActionButton;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,16 +34,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
 
 import adapteur.WishAdapteur;
 import core.SuccessCallback;
-import model.UsersModel;
 import model.WishModel;
 import model.Wisher;
 import services.UserService;
@@ -173,7 +166,7 @@ public class MyWishListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         ListView wishListView = getActivity().findViewById(R.id.list_wishs);
-        userService.updateAdapter(new UserService.WishListener() {
+        userService.updateAdapterWish(new UserService.WishListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 //TODO update UI

@@ -31,7 +31,7 @@ public class MyWishsActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         final ListView listView = (ListView) findViewById(R.id.list_wishs_have);
-        userService.updateAdapter(new UserService.WishListener() {
+        userService.updateAdapterWish(new UserService.WishListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 userService.updateWisherAsync(new SuccessCallback<Wisher>() {
