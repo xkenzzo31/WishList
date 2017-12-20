@@ -23,7 +23,9 @@ import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import core.Error;
@@ -184,6 +186,22 @@ public class UserService {
         });
 
     }
+    public void friendWisher(String email, final SuccessCallback<Wisher> successCallback){
+        mDatabase.child("users").orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                 HashMap<String,HashMap<String, String>> test = new HashMap<>();
+                test.putAll((Map<? extends String, ? extends HashMap<String, String>>) dataSnapshot.getValue());
+                 Wisher friendWisher = Wisher.fromDataSnapshot(dataSnapshot.child(test.keySet().iterator().next()));
+                 successCallback.onSuccess(friendWisher);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
     public List<FriendModel> friendHave(List<FriendModel> allFriend){
         List<FriendModel> result = new ArrayList<>();
         for (FriendModel friendModel : allFriend){
@@ -320,12 +338,15 @@ public class UserService {
         return result;
     }
 
-    public boolean haveFriend(List<FriendModel> list, FriendModel model){
-        boolean result = false;
+    public int haveFriend(List<FriendModel> list, FriendModel model){
+        int i = 0;
+        int result = -1;
+
         for (FriendModel friendModel : list){
             if (friendModel.getUrlFriend().equals(model.getUrlFriend())){
-                result = true;
+                result = i;
             }
+            i++;
         }
         return result;
     }

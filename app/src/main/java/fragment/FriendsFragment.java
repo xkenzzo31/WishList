@@ -1,6 +1,7 @@
 package fragment;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,12 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.lucas.wishlist.R;
+import com.example.lucas.wishlist.activity.WishsFriend;
 import com.getbase.floatingactionbutton.AddFloatingActionButton;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.common.collect.Iterators;
@@ -79,6 +82,7 @@ public class FriendsFragment extends Fragment {
                 add_friend_button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        dialog.dismiss();
                         if (isValidEmail(add_friend_text.getText().toString())){
                             final DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
                             mRef.child("users").orderByChild("email").equalTo(add_friend_text.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -97,18 +101,22 @@ public class FriendsFragment extends Fragment {
                                                         if (email.getUrlFriend().equals(wisher.getEmail())){
                                                             mRef.child("users").child(test.keySet().iterator().next()).child("friend_request").child(i+"").child("status").setValue(true);
                                                             FriendModel friendModel = new FriendModel(add_friend_text.getText().toString(),true);
-                                                            if (!mUserService.haveFriend(wisher.getFriendModels(), friendModel)){
+                                                            int position = mUserService.haveFriend(wisher.getFriendModels(), friendModel);
+                                                            if (position == -1){
                                                                 mUserService.addFriend(friendModel, new OnSuccessListener<Void>() {
                                                                     @Override
                                                                     public void onSuccess(Void aVoid) {
 
                                                                     }
                                                                 });
+                                                            } else {
+                                                                mRef.child("users").child(mUserService.getFirebaseUser().getUid()).child("friend_request").child(position+"").child("status").setValue(true);
                                                             }
 
                                                         } else {
                                                             FriendModel friendModel = new FriendModel(add_friend_text.getText().toString(),false);
-                                                            if (!mUserService.haveFriend(wisher.getFriendModels(), friendModel)){
+                                                            int position = mUserService.haveFriend(wisher.getFriendModels(), friendModel);
+                                                            if (position == -1){
                                                                 mUserService.addFriend(friendModel, new OnSuccessListener<Void>() {
                                                                     @Override
                                                                     public void onSuccess(Void aVoid) {
@@ -166,6 +174,15 @@ public class FriendsFragment extends Fragment {
                         FriendAdapteur friendAdapteur = new FriendAdapteur(getActivity(),mUserService.friendHave(wisher.getFriendModels()));
                         ListView listView = getActivity().findViewById(R.id.list_friend);
                         listView.setAdapter(friendAdapteur);
+                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                FriendModel friendModel = (FriendModel) adapterView.getAdapter().getItem(i);
+                                Intent intent = new Intent(getActivity(), WishsFriend.class);
+                                intent.putExtra("email",friendModel.getUrlFriend());
+                                startActivity(intent);
+                            }
+                        });
 
                     }
                 });
@@ -179,6 +196,15 @@ public class FriendsFragment extends Fragment {
                         FriendAdapteur friendAdapteur = new FriendAdapteur(getActivity(),mUserService.friendHave(wisher.getFriendModels()));
                         ListView listView = getActivity().findViewById(R.id.list_friend);
                         listView.setAdapter(friendAdapteur);
+                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                FriendModel friendModel = (FriendModel) adapterView.getAdapter().getItem(i);
+                                Intent intent = new Intent(getActivity(), WishsFriend.class);
+                                intent.putExtra("email",friendModel.getUrlFriend());
+                                startActivity(intent);
+                            }
+                        });
 
                     }
                 });

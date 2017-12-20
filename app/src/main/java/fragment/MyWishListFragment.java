@@ -111,9 +111,6 @@ public class MyWishListFragment extends Fragment {
                         startActivityForResult(i, RESULT_LOAD_IMAGE);
                     }
                 });
-                title.setText("Iphone X");
-                description.setText("Magnifique iphone X tout neuf ");
-                urlWish.setText("Apple.com");
                 setWishInFirebase.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

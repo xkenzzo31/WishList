@@ -18,7 +18,6 @@
         android:id="@+id/nom_de_compte"
         style="@style/MainActivity.Edit"
         android:hint="@string/email"
-        android:text="123test@test123.fr"
         />
     <View
         style="@style/MainActivity.View"
